@@ -4,10 +4,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import AdZoneDisplay from "@/components/ads/AdZoneDisplay"; // ✅ dynamic ad section
+import SkillLinkBanner from "@/components/global/SkillLinkBanner"; // ✅ imported banner
 
 export default function LandingPage() {
   return (
     <main className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-b from-orange-50 to-white text-center px-6">
+
       {/* 🌞 Main Header */}
       <motion.h1
         initial={{ opacity: 0, y: -10 }}
@@ -81,6 +83,9 @@ export default function LandingPage() {
       <div className="w-full max-w-4xl mb-10">
         <AdZoneDisplay zone="landing-mid" />
       </div>
+
+      {/* 🌐 SkillLink Banner (High-Priority) */}
+      <SkillLinkBanner />
 
       {/* 🏅 Recent Winners (rotating placeholder) */}
       <section className="w-full bg-orange-50 py-8 border-y border-orange-200 mb-10">
