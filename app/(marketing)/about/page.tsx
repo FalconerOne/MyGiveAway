@@ -4,10 +4,14 @@ import { motion } from "framer-motion";
 import EditMission from "./EditMission";
 import EditTeam from "./EditTeam";
 import EditTimeline from "./EditTimeline";
+import AboutPromoBanner from "./AboutPromoBanner";
 
 export default function AboutPage() {
   return (
     <main className="min-h-screen flex flex-col items-center bg-gradient-to-b from-orange-50 via-white to-orange-100 text-gray-800">
+      {/* 🚀 Rotating Banner (Promo + Cross Brand Funnel) */}
+      <AboutPromoBanner />
+
       {/* 🏁 Hero Section */}
       <section className="text-center py-16 px-6">
         <motion.h1
@@ -18,6 +22,7 @@ export default function AboutPage() {
         >
           About <span className="text-orange-500">MyGiveAway</span>
         </motion.h1>
+
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -40,8 +45,13 @@ export default function AboutPage() {
 
       {/* ✨ Footer note */}
       <footer className="py-12 text-sm text-gray-500 text-center">
-        <p>© {new Date().getFullYear()} MyGiveAway. Built by <span className="text-orange-600 font-semibold">FalconerOne Technologies</span>.</p>
-        <p className="mt-2">In partnership with <span className="text-orange-600 font-semibold">SkillLink Africa</span>.</p>
+        <p>
+          © {new Date().getFullYear()} MyGiveAway. Built by{" "}
+          <span className="text-orange-600 font-semibold">FalconerOne Technologies</span>.
+        </p>
+        <p className="mt-2">
+          In partnership with <span className="text-orange-600 font-semibold">SkillLink Africa</span>.
+        </p>
       </footer>
     </main>
   );
