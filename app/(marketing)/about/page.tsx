@@ -5,12 +5,13 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Users, Heart, Gift } from "lucide-react";
-import SkillLinkBanner from "@/components/SkillLinkBanner";
+import SkillLinkBanner from "@/components/SkillLinkBanner"; // ✅ SkillLink Banner import
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-20">
       <div className="max-w-5xl mx-auto px-6 text-center">
+        {/* Page Title */}
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -19,6 +20,7 @@ export default function AboutPage() {
           About <span className="text-pink-600">MyGiveAway</span>
         </motion.h1>
 
+        {/* Subtitle / Tagline */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -29,6 +31,7 @@ export default function AboutPage() {
           We believe in fun, fairness, and community-driven giving.
         </motion.p>
 
+        {/* Feature Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           {[
             {
@@ -64,6 +67,7 @@ export default function AboutPage() {
           ))}
         </div>
 
+        {/* Navigation Buttons */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -80,10 +84,10 @@ export default function AboutPage() {
             <Button variant="ghost">Our Journey</Button>
           </Link>
         </motion.div>
-      </div>
 
-      {/* SkillLink Banner Integration */}
-      <SkillLinkBanner />
+        {/* ✅ SkillLink Banner Integration */}
+        <SkillLinkBanner /> {/* Rotating slogans banner */}
+      </div>
     </div>
   );
 }
