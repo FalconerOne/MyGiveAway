@@ -1,48 +1,30 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
 
-const messages = [
-  "🎁 Win, Track, and Celebrate Giveaways on MyGiveAway.ng!",
-  "🌟 Join Giveaways that Support Charities and Spark Joy!",
-  "🎉 Every Win Counts — Be Part of Something Giving!",
-  "💖 Turn Celebration into Purpose — Explore MyGiveAway.ng!",
-  "🚀 Discover Giveaways that Delight You & Support Charity!",
-];
-
-export const MyGiveAwayBanner = () => {
-  const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % messages.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
-
+export default function MyGiveAwayBanner() {
   return (
-    <div className="relative w-full overflow-hidden rounded-2xl border border-indigo-100 bg-gradient-to-r from-pink-50 via-rose-50 to-orange-50 p-4 text-center shadow-md">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={index}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.6 }}
-          className="text-lg font-medium text-gray-800"
+    <motion.div
+      className="w-full bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white text-center py-4 px-3 rounded-2xl shadow-lg mb-6"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+    >
+      <h2 className="text-xl sm:text-2xl font-semibold">
+        🎉 Join, Win, and Track GiveAways that Delight You & Support Charity!
+      </h2>
+      <p className="text-sm mt-2 opacity-90">
+        Participate now, share with friends, and make every entry count for a cause.
+      </p>
+      <div className="mt-4">
+        <Link
+          href="/giveaways"
+          className="bg-white text-pink-600 font-semibold py-2 px-5 rounded-full shadow hover:bg-pink-50 transition"
         >
-          <Link
-            href="https://www.MyGiveAway.ng"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-rose-600 transition-colors"
-          >
-            {messages[index]}
-          </Link>
-        </motion.div>
-      </AnimatePresence>
-    </div>
+          Explore GiveAways
+        </Link>
+      </div>
+    </motion.div>
   );
-};
+}
