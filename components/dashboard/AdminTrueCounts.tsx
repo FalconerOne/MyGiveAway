@@ -1,30 +1,49 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { fetchActualParticipantCount } from "@/lib/supabase/leaderboard";
-import { getViewerId, fetchViewerProfile, isAdmin } from "@/lib/supabase/eligibility";
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabaseClient";
+import { motion } from "framer-motion";
+
+interface AdminCounts {
+  totalUsers: number;
+  totalPrizes: number;
+  totalPoints: number;
+}
 
 export default function AdminTrueCounts() {
-  const [actual, setActual] = useState<number | null>(null);
-  const [isAdminUser, setIsAdminUser] = useState(false);
+  const [counts, setCounts] = useState<AdminCounts>({
+    totalUsers: 0,
+    totalPrizes: 0,
+    totalPoints: 0,
+  });
 
   useEffect(() => {
-    (async () => {
-      const viewerId = await getViewerId();
-      if (!viewerId) return;
-      const p = await fetchViewerProfile(viewerId);
-      if (!isAdmin(p)) return;
-      setIsAdminUser(true);
-      const cnt = await fetchActualParticipantCount();
-      setActual(cnt);
-    })();
+    async function fetchCounts() {
+      const [{ data: usersData }, { data: prizesData }, { data: pointsData }] =
+        await Promise.all([
+          supabase.from("users").select("*"),
+          supabase.from("user_prizes").select("*"),
+          supabase.from("user_points").select("*"),
+        ]);
+      setCounts({
+        totalUsers: usersData?.length || 0,
+        totalPrizes: prizesData?.length || 0,
+        totalPoints: pointsData?.reduce((acc, p: any) => acc + p.points, 0) || 0,
+      });
+    }
+    fetchCounts();
   }, []);
 
-  if (!isAdminUser) return null;
-
   return (
-    <div className="p-3 bg-slate-900 rounded-md border border-slate-800 text-sm text-slate-200">
-      <strong>Actual participants:</strong> {actual ?? "loading..."}
-    </div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.6 }}
+      className="bg-white p-6 rounded-xl shadow-md flex justify-between gap-4"
+    >
+      <div>Total Users: {counts.totalUsers}</div>
+      <div>Total Prizes: {counts.totalPrizes}</div>
+      <div>Total Points: {counts.totalPoints}</div>
+    </motion.div>
   );
 }
