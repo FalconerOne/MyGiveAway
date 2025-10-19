@@ -5,13 +5,12 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Users, Heart, Gift } from "lucide-react";
-import SkillLinkBanner from "@/components/SkillLinkBanner"; // ✅ SkillLink Banner import
+import SkillLinkBanner from "@/components/SkillLinkBanner"; // ✅ imported
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-20">
       <div className="max-w-5xl mx-auto px-6 text-center">
-        {/* Page Title */}
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -20,7 +19,6 @@ export default function AboutPage() {
           About <span className="text-pink-600">MyGiveAway</span>
         </motion.h1>
 
-        {/* Subtitle / Tagline */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -31,7 +29,6 @@ export default function AboutPage() {
           We believe in fun, fairness, and community-driven giving.
         </motion.p>
 
-        {/* Feature Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           {[
             {
@@ -59,35 +56,4 @@ export default function AboutPage() {
               <Card className="shadow-md rounded-2xl hover:shadow-lg transition p-6">
                 <CardContent>
                   {item.icon}
-                  <h3 className="text-xl font-semibold mt-4 mb-2">{item.title}</h3>
-                  <p className="text-gray-600">{item.desc}</p>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Navigation Buttons */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.9 }}
-          className="space-x-4 mb-16"
-        >
-          <Link href="/(marketing)/about/EditMission">
-            <Button variant="default">Our Mission</Button>
-          </Link>
-          <Link href="/(marketing)/about/EditTeam">
-            <Button variant="outline">Meet the Team</Button>
-          </Link>
-          <Link href="/(marketing)/about/EditTimeline">
-            <Button variant="ghost">Our Journey</Button>
-          </Link>
-        </motion.div>
-
-        {/* ✅ SkillLink Banner Integration */}
-        <SkillLinkBanner /> {/* Rotating slogans banner */}
-      </div>
-    </div>
-  );
-}
+                  <h3 className="text-xl font-semibold mt-4 mb-
