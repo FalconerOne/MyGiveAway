@@ -1,96 +1,73 @@
-'use client';
+// components/global/WinnerCelebrationPopup.tsx
 
-import React, { useEffect, useState } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import confetti from 'canvas-confetti';
-import Image from 'next/image';
+'use client'
 
-interface WinnerData {
-  title: string;
-  message: string;
-  prize_image?: string | null;
-  target_user?: string | null;
+import React, { useEffect, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import Image from 'next/image'
+import ConfettiCanvas from './ConfettiCanvas'
+
+interface WinnerCelebrationPopupProps {
+  winnerData: {
+    giveaway_title?: string
+    prize_image?: string
+    prize_name?: string
+    winner_name?: string
+    winner_id?: string
+    winner_role?: string
+  } | null
+  currentUserRole: 'admin' | 'supervisor' | 'activated' | 'guest' | null
+  visible: boolean
+  onClose: () => void
 }
 
-export default function WinnerCelebrationModal() {
-  const supabase = createClientComponentClient();
-  const [show, setShow] = useState(false);
-  const [winnerData, setWinnerData] = useState<WinnerData | null>(null);
-
-  const launchConfetti = () => {
-    const duration = 3000;
-    const animationEnd = Date.now() + duration;
-    const defaults = { startVelocity: 35, spread: 360, ticks: 70, zIndex: 9999 };
-
-    const interval: any = setInterval(() => {
-      const timeLeft = animationEnd - Date.now();
-      if (timeLeft <= 0) return clearInterval(interval);
-      const particleCount = 50 * (timeLeft / duration);
-      confetti({
-        ...defaults,
-        particleCount,
-        origin: { x: Math.random(), y: Math.random() - 0.2 },
-      });
-    }, 250);
-  };
+export default function WinnerCelebrationPopup({
+  winnerData,
+  currentUserRole,
+  visible,
+  onClose,
+}: WinnerCelebrationPopupProps) {
+  const [showConfetti, setShowConfetti] = useState(false)
 
   useEffect(() => {
-    const channel = supabase
-      .channel('winner-celebration-popup')
-      .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'notifications' },
-        (payload) => {
-          const data = payload.new as any;
-          if (data.type === 'winner_announcement') {
-            const winner: WinnerData = {
-              title: data.title,
-              message:
-                data.target_user === null
-                  ? '🎉 A giveaway just had a winner! Activate your account to view full details.'
-                  : data.message,
-              prize_image: data.prize_image,
-              target_user: data.target_user,
-            };
-            setWinnerData(winner);
-            setShow(true);
-            launchConfetti();
-            setTimeout(() => setShow(false), 10000);
-          }
-        }
-      )
-      .subscribe();
+    if (visible) {
+      setShowConfetti(true)
+      const timer = setTimeout(() => {
+        setShowConfetti(false)
+        onClose()
+      }, 7000)
+      return () => clearTimeout(timer)
+    }
+  }, [visible, onClose])
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [supabase]);
+  if (!winnerData) return null
 
-  if (!show || !winnerData) return null;
+  // Role-based visibility masking
+  const maskedName =
+    currentUserRole === 'guest'
+      ? '🎉 A lucky winner has been chosen!'
+      : currentUserRole === 'supervisor'
+      ? `Winner: ${winnerData.winner_name?.slice(0, 1) || '?'}***`
+      : `🏆 ${winnerData.winner_name || 'Winner'}`
+  const prizeDisplay =
+    currentUserRole === 'guest'
+      ? 'Mystery Prize'
+      : winnerData.prize_name || 'Exclusive Reward'
 
   return (
-    <div className="fixed inset-0 z-[9998] flex items-center justify-center bg-black/70 backdrop-blur-sm">
-      <div
-        className="relative bg-white rounded-2xl p-8 text-center shadow-2xl max-w-md w-[90%] animate-fadeIn"
-        onClick={() => setShow(false)}
-      >
-        <h2 className="text-2xl font-bold text-primary mb-4">
-          {winnerData.title}
-        </h2>
-        <p className="text-lg mb-4">{winnerData.message}</p>
-        {winnerData.prize_image && (
-          <div className="flex justify-center mb-4">
-            <Image
-              src={winnerData.prize_image}
-              alt="Prize"
-              width={180}
-              height={180}
-              className="rounded-xl object-cover"
-            />
-          </div>
-        )}
-        <p className="text-sm text-gray-500">(Click anywhere to close)</p>
-      </div>
-    </div>
-  );
-}
+    <>
+      <ConfettiCanvas active={showConfetti} />
+
+      <AnimatePresence>
+        {visible && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-[9998] flex items-center justify-center bg-black/50 backdrop-blur-sm"
+            onClick={onClose}
+          >
+            <motion.div
+              onClick={(e) => e.stopPropagation()}
+              className="relative bg-white rounded-2xl shadow-xl p-6 w
