@@ -1,0 +1,146 @@
+/* styles/globals.css */
+
+/* ────────────────
+   Font Import
+──────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap');
+
+/* ────────────────
+   Tailwind Core
+──────────────── */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ────────────────
+   Global Layout & Font
+──────────────── */
+html, body, #__next {
+  height: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(180deg, #fff7ed, #fff);
+  font-family: 'Segoe UI', 'Helvetica Neue', 'Roboto', 'Ubuntu', 'Noto Sans', Arial, sans-serif;
+  color: #333;
+  scroll-behavior: smooth;
+  opacity: 0;
+  animation: fadeIn 1.2s ease-in-out forwards;
+}
+
+/* ────────────────
+   Animations
+──────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%,100% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(255,102,0,0)); }
+  50% { transform: scale(1.05); filter: drop-shadow(0 0 10px rgba(255,102,0,0.35)); }
+}
+
+@keyframes fadeOut {
+  0% { opacity:1; transform: translateY(0); }
+  80% { opacity:1; transform: translateY(0); }
+  100% { opacity:0; transform: translateY(-6px); }
+}
+
+@keyframes fadeSlideIn {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* ────────────────
+   Element Animations
+──────────────── */
+.animate-fadeOut { animation: fadeOut 4s forwards; }
+.animate-fadeSlideIn { animation: fadeSlideIn 0.6s ease-in-out; }
+
+.floating-share-btn {
+  transition: all 0.3s ease-in-out;
+  animation: pulse 10s infinite ease-in-out;
+}
+.floating-share-btn:hover {
+  transform: translateY(-4px) scale(1.07);
+  filter: drop-shadow(0 0 12px rgba(255, 102, 0, 0.45));
+}
+
+/* ────────────────
+   Accessibility & Hover Glow
+──────────────── */
+button:hover, a:hover, svg:hover {
+  color: #ff6600 !important;
+  filter: drop-shadow(0 0 6px rgba(255,102,0,0.4));
+  transition: all 0.25s ease-in-out;
+}
+
+button:focus-visible, a:focus-visible {
+  outline: 2px solid #ff6600;
+  outline-offset: 3px;
+}
+
+/* ────────────────
+   SolarizedNG Dashboard Polish
+──────────────── */
+
+/* Consistent base for all dashboard pages */
+main {
+  @apply bg-gray-50 text-gray-800 min-h-screen;
+}
+
+/* Standard heading style */
+h1, h2, h3, h4 {
+  @apply font-semibold text-gray-900;
+}
+
+/* Reusable widget/card container */
+.card {
+  @apply bg-white shadow-sm rounded-2xl p-4 transition-all;
+}
+
+.card:hover {
+  @apply shadow-md;
+}
+
+/* Optional container for dashboard sections */
+.section-title {
+  @apply text-lg font-semibold mb-2 text-gray-800;
+}
+/* --- SolarizedNG UI Polish Layer --- */
+html, body {
+  scroll-behavior: smooth;
+  background-color: #f9fafb;
+}
+
+/* Generic reusable card for dashboard blocks */
+.card {
+  @apply bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 p-4;
+}
+
+/* Buttons */
+.btn {
+  @apply inline-flex items-center justify-center px-4 py-2 rounded-xl font-semibold transition-all duration-200;
+}
+
+.btn-primary {
+  @apply bg-indigo-600 text-white hover:bg-indigo-700;
+}
+
+.btn-secondary {
+  @apply bg-gray-200 hover:bg-gray-300 text-gray-800;
+}
+
+/* Tags / Badges */
+.tag {
+  @apply text-xs font-medium px-2 py-1 rounded-full;
+}
+
+.tag-active {
+  @apply bg-green-100 text-green-700;
+}
+
+.tag-inactive {
+  @apply bg-red-100 text-red-700;
+}
