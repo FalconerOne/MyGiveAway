@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Users, Heart, Gift } from "lucide-react";
-import SkillLinkBanner from "@/components/SkillLinkBanner"; // ✅ imported
 
 export default function AboutPage() {
   return (
@@ -56,4 +55,31 @@ export default function AboutPage() {
               <Card className="shadow-md rounded-2xl hover:shadow-lg transition p-6">
                 <CardContent>
                   {item.icon}
-                  <h3 className="text-xl font-semibold mt-4 mb-
+                  <h3 className="text-xl font-semibold mt-4 mb-2">{item.title}</h3>
+                  <p className="text-gray-600">{item.desc}</p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.9 }}
+          className="space-x-4"
+        >
+          <Link href="/(marketing)/about/EditMission">
+            <Button variant="default">Our Mission</Button>
+          </Link>
+          <Link href="/(marketing)/about/EditTeam">
+            <Button variant="outline">Meet the Team</Button>
+          </Link>
+          <Link href="/(marketing)/about/EditTimeline">
+            <Button variant="ghost">Our Journey</Button>
+          </Link>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
