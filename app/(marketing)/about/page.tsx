@@ -4,7 +4,8 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Users, Heart, Globe2, Gift } from "lucide-react";
+import { Users, Heart, Gift } from "lucide-react";
+import SkillLinkBanner from "@/components/SkillLinkBanner";
 
 export default function AboutPage() {
   return (
@@ -67,7 +68,7 @@ export default function AboutPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.9 }}
-          className="space-x-4"
+          className="space-x-4 mb-16"
         >
           <Link href="/(marketing)/about/EditMission">
             <Button variant="default">Our Mission</Button>
@@ -80,6 +81,9 @@ export default function AboutPage() {
           </Link>
         </motion.div>
       </div>
+
+      {/* SkillLink Banner Integration */}
+      <SkillLinkBanner />
     </div>
   );
 }
