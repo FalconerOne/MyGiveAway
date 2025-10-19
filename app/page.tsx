@@ -1,56 +1,115 @@
-// app/page.tsx
-import { useEffect, useState } from "react";
+"use client";
+
+import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
-import { supabase } from "@/lib/supabaseClient";
-import PrizeCard from "@/components/PrizeCard";
-import SkillLinkBanner from "@/components/SkillLinkBanner";
-import AdZone from "@/components/AdZone";
-import WinnersCarousel from "@/components/WinnersCarousel";
-import PartnersSection from "@/components/PartnersSection";
-import Footer from "@/components/Footer";
+import AdZoneDisplay from "@/components/global/AdZoneDisplay";
+import SkillLinkBanner from "@/components/global/SkillLinkBanner";
+import CTAButton from "@/components/global/CTAButton";
 
 export default function LandingPage() {
-  const [prizes, setPrizes] = useState<any[]>([]);
-  const [winners, setWinners] = useState<any[]>([]);
-
-  useEffect(() => {
-    async function fetchData() {
-      const { data: prizesData } = await supabase.from("prizes").select("*").order("created_at", { ascending: false }).limit(6);
-      setPrizes(prizesData || []);
-
-      const { data: winnersData } = await supabase.from("winners").select("*").order("created_at", { ascending: false }).limit(5);
-      setWinners(winnersData || []);
-    }
-    fetchData();
-  }, []);
-
   return (
-    <main className="flex flex-col gap-12 px-4 md:px-16">
-      <section className="grid md:grid-cols-3 gap-6 mt-8">
-        {prizes.map((prize) => (
-          <PrizeCard key={prize.id} prize={prize} />
-        ))}
+    <main className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-b from-orange-50 to-white text-center px-6">
+
+      {/* 🌞 Header */}
+      <motion.h1
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="text-4xl md:text-6xl font-bold text-orange-600 mb-3"
+      >
+        MyGiveAway
+      </motion.h1>
+
+      <motion.h2
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+        className="text-5xl md:text-7xl font-extrabold bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent mb-6"
+      >
+        GiveAwayz
+      </motion.h2>
+
+      <p className="text-sm text-gray-500 mb-6">
+        Powered by <span className="font-semibold text-orange-600">Solarize Solutions Nig Ltd</span>
+      </p>
+
+      {/* 🎯 Tagline */}
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3 }}
+        className="text-gray-700 text-lg max-w-xl mb-8"
+      >
+        Join the fun, win <span className="text-orange-600 font-semibold">tablets, phones, smartwatches, cash rewards</span>, hoodies, t-shirts and much more every month!
+      </motion.p>
+
+      {/* 🚀 CTA Buttons */}
+      <div className="flex gap-4 flex-wrap justify-center mb-8">
+        <CTAButton href="/register" text="Join the Giveaway" variant="primary" />
+        <CTAButton href="/dashboard" text="Go to Dashboard" variant="secondary" />
+      </div>
+
+      {/* 🏆 Prize Preview Section */}
+      <section className="w-full max-w-5xl mx-auto mb-10">
+        <h3 className="text-2xl font-bold text-orange-600 mb-4">This Month’s Prizes</h3>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 justify-center">
+          <Image src="/prizes/prize1.jpg" alt="Prize 1" width={160} height={160} className="rounded-lg shadow" loading="lazy"/>
+          <Image src="/prizes/prize2.jpg" alt="Prize 2" width={160} height={160} className="rounded-lg shadow" loading="lazy"/>
+          <Image src="/prizes/prize3.jpg" alt="Prize 3" width={160} height={160} className="rounded-lg shadow" loading="lazy"/>
+          <Image src="/images/heart-heroes-logo.png" alt="Special Bonus" width={160} height={160} className="rounded-lg shadow" loading="lazy"/>
+        </div>
       </section>
 
-      <SkillLinkBanner priority="high" />
+      {/* 🧩 AdZone Mid */}
+      <div className="w-full max-w-4xl mb-10">
+        <AdZoneDisplay zone="landing-mid" />
+      </div>
 
-      <AdZone position="mid" priority="medium" />
+      {/* 🌐 SkillLink Banner */}
+      <SkillLinkBanner />
 
-      <motion.section 
-        className="mt-12"
-        initial={{ opacity: 0 }} 
-        animate={{ opacity: 1 }} 
-        transition={{ duration: 0.8 }}
-      >
-        <h2 className="text-2xl font-bold mb-4">Recent Winners</h2>
-        <WinnersCarousel winners={winners} />
-      </motion.section>
+      {/* 🏅 Recent Winners */}
+      <section className="w-full bg-orange-50 py-8 border-y border-orange-200 mb-10">
+        <h3 className="text-xl font-semibold text-orange-600 mb-4">Recent Winners</h3>
+        <p className="text-gray-700">
+          🎉 <strong>Chinedu A.</strong> just won a Smartwatch! <br />
+          🎁 <strong>Oluwatobi E.</strong> claimed ₦10,000 airtime voucher!
+        </p>
+      </section>
 
-      <PartnersSection />
+      {/* 🤝 Partners Section */}
+      <section className="w-full bg-orange-50 py-12 border-t border-orange-200">
+        <div className="max-w-6xl mx-auto px-4 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-orange-600 mb-6">Our Partners</h2>
+          <p className="text-gray-700 mb-8">
+            Proudly supported by organizations and brands that believe in empowerment, growth, and giving back.
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 items-center justify-center">
+            <a href="https://solarizesolutions.com.ng" target="_blank" rel="noopener noreferrer" className="opacity-80 hover:opacity-100 transition">
+              <Image src="/partners/solarize.png" alt="Solarize Solutions" width={120} height={50} className="mx-auto" loading="lazy"/>
+            </a>
+            <a href="https://falconsubs.com.ng" target="_blank" rel="noopener noreferrer" className="opacity-80 hover:opacity-100 transition">
+              <Image src="/partners/falconsubs.jpg" alt="FalconSubs" width={120} height={50} className="mx-auto" loading="lazy"/>
+            </a>
+            <a href="https://cfortnmore.com.ng" target="_blank" rel="noopener noreferrer" className="opacity-80 hover:opacity-100 transition">
+              <Image src="/partners/cfort.png" alt="Cfort & More" width={120} height={50} className="mx-auto" loading="lazy"/>
+            </a>
+            <div className="text-gray-400 italic">Coming soon…</div>
+            <div className="text-gray-400 italic">Coming soon…</div>
+          </div>
+        </div>
+      </section>
 
-      <AdZone position="bottom" priority="medium" />
+      {/* 📢 Bottom Ad Zone */}
+      <div className="w-full max-w-4xl mb-10">
+        <AdZoneDisplay zone="landing-bottom" />
+      </div>
 
-      <Footer />
+      {/* ⚙️ Footer */}
+      <footer className="mt-8 text-sm text-gray-500">
+        App designed by <span className="text-orange-600 font-semibold">FalconerOne Technologies</span>
+      </footer>
     </main>
   );
 }
