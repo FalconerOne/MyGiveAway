@@ -3,67 +3,60 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-const teamMembers = [
+const team = [
   {
-    name: "Joseph Falon",
-    role: "Founder & Project Director",
-    image: "/team/founder.jpg",
+    name: "John Joseph",
+    role: "Founder & Project Lead",
+    img: "/team/john.jpg",
   },
   {
-    name: "Sarah Chidi",
-    role: "Creative Director",
-    image: "/team/creative.jpg",
+    name: "Sarah Adeyemi",
+    role: "Product Designer",
+    img: "/team/sarah.jpg",
   },
   {
-    name: "David Enem",
-    role: "Tech Lead",
-    image: "/team/techlead.jpg",
-  },
-  {
-    name: "Grace Ihenacho",
-    role: "Community Relations",
-    image: "/team/community.jpg",
+    name: "Michael Okoro",
+    role: "Full Stack Developer",
+    img: "/team/michael.jpg",
   },
 ];
 
 export default function EditTeam() {
   return (
-    <section className="bg-orange-50 py-16 border-t border-orange-200">
-      <div className="max-w-6xl mx-auto px-6 text-center">
+    <div className="min-h-screen bg-gray-50 py-20">
+      <div className="max-w-5xl mx-auto px-6 text-center">
         <motion.h2
-          initial={{ opacity: 0, y: -10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-3xl font-bold text-orange-600 mb-10"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-3xl font-bold text-gray-900 mb-10"
         >
-          Meet the Team
+          Meet Our Team
         </motion.h2>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
-          {teamMembers.map((member, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {team.map((person, i) => (
             <motion.div
-              key={index}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: index * 0.2 }}
-              className="text-center"
+              key={i}
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.2 }}
+              className="bg-white rounded-2xl shadow-md hover:shadow-lg p-6"
             >
-              <div className="relative w-32 h-32 mx-auto mb-4">
+              <div className="w-32 h-32 mx-auto rounded-full overflow-hidden mb-4">
                 <Image
-                  src={member.image}
-                  alt={member.name}
+                  src={person.img}
+                  alt={person.name}
                   width={128}
                   height={128}
-                  className="rounded-full shadow-lg object-cover"
+                  className="object-cover"
                 />
               </div>
-              <h3 className="font-semibold text-orange-700">{member.name}</h3>
-              <p className="text-sm text-gray-500">{member.role}</p>
+              <h3 className="text-lg font-semibold">{person.name}</h3>
+              <p className="text-sm text-gray-600">{person.role}</p>
             </motion.div>
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 }
-
