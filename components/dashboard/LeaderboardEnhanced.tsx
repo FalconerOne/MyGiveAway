@@ -2,53 +2,39 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
-import { motion } from "framer-motion";
 
 interface LeaderboardUser {
   id: string;
-  name: string;
+  username: string;
   points: number;
 }
 
 export default function LeaderboardEnhanced() {
-  const [leaders, setLeaders] = useState<LeaderboardUser[]>([]);
+  const [users, setUsers] = useState<LeaderboardUser[]>([]);
 
   useEffect(() => {
     async function fetchLeaderboard() {
-      const { data, error } = await supabase
-        .from("user_points")
-        .select("user_id, points, users(name)")
+      const { data } = await supabase
+        .from("profiles")
+        .select("id, username, points")
         .order("points", { ascending: false })
-        .limit(10)
-        .eq("users.is_active", true)
-        .returns<LeaderboardUser[]>();
-      if (!error && data) setLeaders(data);
+        .limit(60);
+      if (data) setUsers(data);
     }
     fetchLeaderboard();
   }, []);
 
   return (
-    <motion.div
-      className="bg-gradient-to-r from-orange-400 to-pink-500 text-white p-6 rounded-xl shadow-lg"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
-    >
-      <h3 className="text-xl font-bold mb-4">Top Players</h3>
-      <ul className="space-y-2">
-        {leaders.length ? (
-          leaders.map((user, idx) => (
-            <li key={user.id} className="flex justify-between">
-              <span>
-                #{idx + 1} {user.name}
-              </span>
-              <span>{user.points} pts</span>
-            </li>
-          ))
-        ) : (
-          <li>No leaderboard data</li>
-        )}
+    <div className="bg-white rounded-xl shadow p-6 w-full max-w-3xl">
+      <h3 className="text-orange-600 font-bold text-xl mb-4">Leaderboard</h3>
+      <ul>
+        {users.map((user, idx) => (
+          <li key={user.id} className="flex justify-between py-1 border-b border-gray-200">
+            <span>{idx + 1}. {user.username}</span>
+            <span className="font-semibold">{user.points}</span>
+          </li>
+        ))}
       </ul>
-    </motion.div>
+    </div>
   );
 }
