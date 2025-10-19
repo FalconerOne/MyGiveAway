@@ -2,48 +2,51 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
-import { motion } from "framer-motion";
 
-interface AdminCounts {
+interface Counts {
   totalUsers: number;
+  activeGiveaways: number;
   totalPrizes: number;
-  totalPoints: number;
 }
 
 export default function AdminTrueCounts() {
-  const [counts, setCounts] = useState<AdminCounts>({
+  const [counts, setCounts] = useState<Counts>({
     totalUsers: 0,
+    activeGiveaways: 0,
     totalPrizes: 0,
-    totalPoints: 0,
   });
 
   useEffect(() => {
     async function fetchCounts() {
-      const [{ data: usersData }, { data: prizesData }, { data: pointsData }] =
+      const [{ count: users }, { count: giveaways }, { count: prizes }] =
         await Promise.all([
-          supabase.from("users").select("*"),
-          supabase.from("user_prizes").select("*"),
-          supabase.from("user_points").select("*"),
+          supabase.from("profiles").select("*", { count: "exact" }),
+          supabase.from("giveaways").select("*", { count: "exact" }).eq("status", "active"),
+          supabase.from("prizes").select("*", { count: "exact" }),
         ]);
       setCounts({
-        totalUsers: usersData?.length || 0,
-        totalPrizes: prizesData?.length || 0,
-        totalPoints: pointsData?.reduce((acc, p: any) => acc + p.points, 0) || 0,
+        totalUsers: users || 0,
+        activeGiveaways: giveaways || 0,
+        totalPrizes: prizes || 0,
       });
     }
     fetchCounts();
   }, []);
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
-      className="bg-white p-6 rounded-xl shadow-md flex justify-between gap-4"
-    >
-      <div>Total Users: {counts.totalUsers}</div>
-      <div>Total Prizes: {counts.totalPrizes}</div>
-      <div>Total Points: {counts.totalPoints}</div>
-    </motion.div>
+    <div className="bg-white rounded-xl shadow p-6 w-full max-w-3xl grid grid-cols-3 text-center mb-6">
+      <div>
+        <h4 className="text-orange-600 font-bold">Users</h4>
+        <p className="text-2xl font-semibold">{counts.totalUsers}</p>
+      </div>
+      <div>
+        <h4 className="text-orange-600 font-bold">Active Giveaways</h4>
+        <p className="text-2xl font-semibold">{counts.activeGiveaways}</p>
+      </div>
+      <div>
+        <h4 className="text-orange-600 font-bold">Prizes</h4>
+        <p className="text-2xl font-semibold">{counts.totalPrizes}</p>
+      </div>
+    </div>
   );
 }
