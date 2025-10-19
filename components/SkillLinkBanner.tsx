@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const slogans = [
   "🎯 Got Skills? Turn them into Cash on SkillLink Africa!",
@@ -17,25 +17,29 @@ export default function SkillLinkBanner() {
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % slogans.length);
-    }, 6000); // change slogan every 6 seconds
+    }, 4000); // rotates every 4 seconds
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <motion.div
-      className="w-full bg-gradient-to-r from-blue-600 via-cyan-500 to-green-400 text-white text-center py-3 px-2 rounded-2xl shadow-lg"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8 }}
-    >
-      <a
-        href="https://skilllinkafrica.ng"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="block text-base sm:text-lg font-semibold hover:underline transition"
+    <div className="w-full mt-16 mb-10">
+      <motion.div
+        className="bg-gradient-to-r from-pink-500 to-purple-600 rounded-2xl shadow-lg text-white text-center py-6 cursor-pointer hover:scale-[1.02] transition"
+        onClick={() => window.open("https://www.skilllinkafrica.ng", "_blank")}
       >
-        {slogans[index]}
-      </a>
-    </motion.div>
+        <AnimatePresence mode="wait">
+          <motion.p
+            key={index}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.6 }}
+            className="text-lg md:text-xl font-medium"
+          >
+            {slogans[index]}
+          </motion.p>
+        </AnimatePresence>
+      </motion.div>
+    </div>
   );
 }
