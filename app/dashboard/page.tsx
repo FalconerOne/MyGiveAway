@@ -13,6 +13,7 @@ import PrizeClaimPanel from "@/components/dashboard/PrizeClaimPanel";
 import LeaderboardEnhanced from "@/components/dashboard/LeaderboardEnhanced";
 import AdminTrueCounts from "@/components/dashboard/AdminTrueCounts";
 import WinnerCelebration from "@/components/WinnerCelebration";
+import SkillLinkBanner from "@/components/SkillLinkBanner"; // ✅ Added banner
 
 interface Ad {
   id: string;
@@ -267,31 +268,4 @@ export default function DashboardPage() {
                 className="bg-white border border-orange-400 text-orange-600 text-center py-3 rounded-xl shadow hover:bg-orange-50 transition"
               >
                 Activity Summary
-              </Link>
-              <Link
-                href="/admin/maintenance"
-                className="bg-orange-500 hover:bg-orange-600 text-white text-center py-3 rounded-xl shadow transition"
-              >
-                Maintenance Mode
-              </Link>
-            </div>
-
-            <p className="text-xs text-gray-600 mt-4 text-center italic">
-              (Admin controls are visible only to authorized Solarize staff)
-            </p>
-          </motion.section>
-        )}
-      </div>
-
-      {/* 🎉 Winner Celebration Popup */}
-      <WinnerCelebration
-        visible={showWinner}
-        onClose={() => setShowWinner(false)}
-        giveawayTitle={winnerData.giveawayTitle}
-        winnerName={winnerData.winnerName}
-        prizeImage={winnerData.prizeImage}
-        isVisibleToUser={winnerData.isVisibleToUser}
-      />
-    </main>
-  );
-}
+              </
