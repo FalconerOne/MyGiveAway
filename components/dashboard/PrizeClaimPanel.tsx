@@ -1,9 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Gift } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
-import { motion } from "framer-motion";
 
 interface Prize {
   id: string;
@@ -11,45 +9,47 @@ interface Prize {
   claimed: boolean;
 }
 
-interface PrizeClaimPanelProps {
+interface Props {
   userId: string;
 }
 
-export default function PrizeClaimPanel({ userId }: PrizeClaimPanelProps) {
+export default function PrizeClaimPanel({ userId }: Props) {
   const [prizes, setPrizes] = useState<Prize[]>([]);
 
   useEffect(() => {
     async function fetchPrizes() {
-      const { data, error } = await supabase
-        .from("user_prizes")
+      const { data } = await supabase
+        .from("prizes")
         .select("*")
         .eq("user_id", userId);
-      if (!error && data) setPrizes(data);
+      if (data) setPrizes(data);
     }
     fetchPrizes();
   }, [userId]);
 
+  async function claimPrize(prizeId: string) {
+    await supabase.from("prizes").update({ claimed: true }).eq("id", prizeId);
+    setPrizes((prev) =>
+      prev.map((p) => (p.id === prizeId ? { ...p, claimed: true } : p))
+    );
+  }
+
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="bg-white rounded-xl p-6 shadow-md flex flex-col gap-3"
-    >
-      <div className="flex items-center gap-2 text-pink-500 font-semibold">
-        <Gift size={24} /> Your Prizes
-      </div>
-      <ul className="text-gray-700">
-        {prizes.length ? (
-          prizes.map((p) => (
-            <li key={p.id}>
-              {p.title} {p.claimed ? "(Claimed ✅)" : "(Pending ⏳)"}
-            </li>
-          ))
-        ) : (
-          <li>No prizes yet</li>
-        )}
-      </ul>
-    </motion.div>
+    <div className="w-full max-w-xl grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {prizes.map((prize) => (
+        <div key={prize.id} className="bg-white shadow rounded p-4 text-center">
+          <h4 className="font-bold text-orange-600 mb-2">{prize.title}</h4>
+          <button
+            disabled={prize.claimed}
+            onClick={() => claimPrize(prize.id)}
+            className={`px-4 py-2 rounded-full font-medium ${
+              prize.claimed ? "bg-gray-300 text-gray-700" : "bg-orange-500 text-white hover:bg-orange-600"
+            }`}
+          >
+            {prize.claimed ? "Claimed" : "Claim Prize"}
+          </button>
+        </div>
+      ))}
+    </div>
   );
 }
