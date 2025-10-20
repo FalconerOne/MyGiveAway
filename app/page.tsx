@@ -1,10 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import AdZoneDisplay from "@/components/global/AdZoneDisplay";
 import SkillLinkBanner from "@/components/global/SkillLinkBanner";
-import CTAButton from "@/components/global/CTAButton";
 
 export default function LandingPage() {
   return (
@@ -32,21 +32,21 @@ export default function LandingPage() {
         Powered by <span className="font-semibold text-orange-600">Solarize Solutions Nig Ltd</span>
       </p>
 
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3 }}
-        className="text-gray-700 text-lg max-w-xl mb-8"
-      >
-        Join the fun, win <span className="text-orange-600 font-semibold">tablets, phones, smartwatches, cash rewards</span>, hoodies, t-shirts and more every month!
-      </motion.p>
-
       <div className="flex gap-4 flex-wrap justify-center mb-8">
-        <CTAButton href="/register" text="Join the Giveaway" variant="primary" />
-        <CTAButton href="/dashboard" text="Go to Dashboard" variant="secondary" />
+        <Link
+          href="/register"
+          className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-full shadow-md font-medium transition"
+        >
+          Join the Giveaway
+        </Link>
+        <Link
+          href="/dashboard"
+          className="border border-orange-400 text-orange-600 hover:bg-orange-100 px-6 py-3 rounded-full shadow-md font-medium transition"
+        >
+          Go to Dashboard
+        </Link>
       </div>
 
-      {/* Prize Previews */}
       <section className="w-full max-w-5xl mx-auto mb-10">
         <h3 className="text-2xl font-bold text-orange-600 mb-4">This Month’s Prizes</h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 justify-center">
@@ -62,7 +62,7 @@ export default function LandingPage() {
         transition={{ repeat: Infinity, duration: 12, ease: "linear" }}
         className="text-orange-500 font-semibold text-lg mb-8"
       >
-        Join the fun • Win Big • Every Week/Month • Win Data/Airtime Weekly
+        Join the fun • Win Big • Every Week/Month • Win Data/Airtime Weekly • Join the fun • Win Big • Every Week/Month • Win Data/Airtime Weekly
       </motion.div>
 
       <div className="w-full max-w-4xl mb-10">
@@ -71,7 +71,6 @@ export default function LandingPage() {
 
       <SkillLinkBanner />
 
-      {/* Recent Winners */}
       <section className="w-full bg-orange-50 py-8 border-y border-orange-200 mb-10">
         <h3 className="text-xl font-semibold text-orange-600 mb-4">Recent Winners</h3>
         <p className="text-gray-700">
@@ -80,7 +79,6 @@ export default function LandingPage() {
         </p>
       </section>
 
-      {/* Partners */}
       <section className="w-full bg-orange-50 py-12 border-t border-orange-200">
         <div className="max-w-6xl mx-auto px-4 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-orange-600 mb-6">Our Partners</h2>
