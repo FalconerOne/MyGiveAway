@@ -3,18 +3,17 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 
-interface Ad {
-  id: string;
-  image_url: string;
-  link_url: string;
-  priority: "high" | "medium" | "low";
-}
-
-interface Props {
+interface AdZoneProps {
   zone: string;
 }
 
-export default function AdZoneDisplay({ zone }: Props) {
+interface Ad {
+  id: string;
+  image_url: string;
+  link: string;
+}
+
+export default function AdZoneDisplay({ zone }: AdZoneProps) {
   const [ads, setAds] = useState<Ad[]>([]);
 
   useEffect(() => {
@@ -24,22 +23,19 @@ export default function AdZoneDisplay({ zone }: Props) {
         .select("*")
         .eq("zone", zone)
         .order("priority", { ascending: true });
+
       if (data) setAds(data);
     }
     fetchAds();
   }, [zone]);
 
+  if (ads.length === 0) return null;
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 justify-center">
+    <div className="flex flex-wrap justify-center gap-4">
       {ads.map((ad) => (
-        <a
-          key={ad.id}
-          href={ad.link_url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="rounded-lg overflow-hidden shadow hover:scale-105 transition transform"
-        >
-          <img src={ad.image_url} alt={`Ad ${ad.id}`} className="w-full h-40 object-cover" />
+        <a key={ad.id} href={ad.link} target="_blank" rel="noopener noreferrer">
+          <img src={ad.image_url} alt={`Ad ${ad.id}`} className="rounded-lg shadow max-h-32" />
         </a>
       ))}
     </div>
