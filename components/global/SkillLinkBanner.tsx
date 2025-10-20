@@ -1,44 +1,31 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabaseClient";
+import Link from "next/link";
 
-interface Banner {
-  id: string;
-  image_url: string;
-  link: string;
-  slogan: string;
-}
+const banners = [
+  "🎯 Got Skills? Turn them into Cash on SkillLink Africa!",
+  "💼 Your hustle fit pay — Link up with real gigs on SkillLink Africa!",
+  "🚀 Don’t just wait for giveaways — start earning on SkillLink!",
+  "💡 Show your talent, connect across Africa — SkillLink!",
+  "🔥 From Lagos to Nairobi — Get paid for your skill on SkillLinkAfrica.ng!"
+];
 
 export default function SkillLinkBanner() {
-  const [banner, setBanner] = useState<Banner | null>(null);
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    async function fetchBanner() {
-      const { data } = await supabase
-        .from("skilllink_banners")
-        .select("*")
-        .order("priority", { ascending: true })
-        .limit(1)
-        .single();
-
-      if (data) setBanner(data);
-    }
-    fetchBanner();
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % banners.length);
+    }, 5000);
+    return () => clearInterval(interval);
   }, []);
 
-  if (!banner) return null;
-
   return (
-    <a href={banner.link} target="_blank" rel="noopener noreferrer" className="block w-full mb-8">
-      <div className="relative overflow-hidden rounded-xl shadow-lg bg-gradient-to-r from-yellow-400 to-orange-500 text-white p-6 text-center">
-        <p className="text-lg md:text-xl font-bold">{banner.slogan}</p>
-        <img
-          src={banner.image_url}
-          alt="SkillLink Banner"
-          className="mx-auto mt-2 max-h-24 object-contain"
-        />
-      </div>
-    </a>
+    <div className="bg-orange-100 rounded-xl shadow p-4 w-full max-w-4xl mx-auto my-6 text-center text-orange-700 font-semibold">
+      <Link href="https://SkillLinkAfrica.ng" target="_blank" className="hover:underline">
+        {banners[index]}
+      </Link>
+    </div>
   );
 }
