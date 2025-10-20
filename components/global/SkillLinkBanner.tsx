@@ -5,8 +5,9 @@ import { supabase } from "@/lib/supabaseClient";
 
 interface Banner {
   id: string;
-  message: string;
+  image_url: string;
   link: string;
+  slogan: string;
 }
 
 export default function SkillLinkBanner() {
@@ -17,9 +18,10 @@ export default function SkillLinkBanner() {
       const { data } = await supabase
         .from("skilllink_banners")
         .select("*")
-        .eq("active", true)
+        .order("priority", { ascending: true })
         .limit(1)
         .single();
+
       if (data) setBanner(data);
     }
     fetchBanner();
@@ -28,13 +30,15 @@ export default function SkillLinkBanner() {
   if (!banner) return null;
 
   return (
-    <a
-      href={banner.link}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-bold py-3 rounded-xl shadow mb-8 inline-block text-center hover:opacity-90 transition"
-    >
-      {banner.message}
+    <a href={banner.link} target="_blank" rel="noopener noreferrer" className="block w-full mb-8">
+      <div className="relative overflow-hidden rounded-xl shadow-lg bg-gradient-to-r from-yellow-400 to-orange-500 text-white p-6 text-center">
+        <p className="text-lg md:text-xl font-bold">{banner.slogan}</p>
+        <img
+          src={banner.image_url}
+          alt="SkillLink Banner"
+          className="mx-auto mt-2 max-h-24 object-contain"
+        />
+      </div>
     </a>
   );
 }
