@@ -1,12 +1,32 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabaseClient";
+
 export default function PointsDisplay() {
-  const points = 1200; // Replace with dynamic Supabase fetch
+  const [points, setPoints] = useState<number>(0);
+
+  useEffect(() => {
+    async function fetchPoints() {
+      const user = supabase.auth.user();
+      if (!user) return;
+
+      const { data } = await supabase
+        .from("profiles")
+        .select("points")
+        .eq("id", user.id)
+        .single();
+
+      if (data?.points) setPoints(data.points);
+    }
+
+    fetchPoints();
+  }, []);
 
   return (
-    <div className="bg-white rounded-xl shadow p-6 text-center">
-      <h3 className="text-orange-600 font-bold mb-2">Your Points</h3>
-      <p className="text-3xl font-extrabold">{points}</p>
+    <div className="bg-white rounded-xl shadow p-6 w-full max-w-sm text-center">
+      <h3 className="text-orange-600 font-bold text-xl mb-2">Your Points</h3>
+      <p className="text-3xl font-extrabold text-gray-800">{points}</p>
     </div>
   );
 }
