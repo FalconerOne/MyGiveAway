@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import AdZoneDisplay from "@/components/global/AdZoneDisplay";
@@ -11,7 +10,6 @@ export default function LandingPage() {
   return (
     <main className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-b from-orange-50 to-white text-center px-6">
 
-      {/* 🌞 Header */}
       <motion.h1
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -34,23 +32,21 @@ export default function LandingPage() {
         Powered by <span className="font-semibold text-orange-600">Solarize Solutions Nig Ltd</span>
       </p>
 
-      {/* 🎯 Tagline */}
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}
         className="text-gray-700 text-lg max-w-xl mb-8"
       >
-        Join the fun, win <span className="text-orange-600 font-semibold">tablets, phones, smartwatches, cash rewards</span>, hoodies, t-shirts and much more every month!
+        Join the fun, win <span className="text-orange-600 font-semibold">tablets, phones, smartwatches, cash rewards</span>, hoodies, t-shirts and more every month!
       </motion.p>
 
-      {/* 🚀 CTA Buttons */}
       <div className="flex gap-4 flex-wrap justify-center mb-8">
         <CTAButton href="/register" text="Join the Giveaway" variant="primary" />
         <CTAButton href="/dashboard" text="Go to Dashboard" variant="secondary" />
       </div>
 
-      {/* 🏆 Prize Preview Section */}
+      {/* Prize Previews */}
       <section className="w-full max-w-5xl mx-auto mb-10">
         <h3 className="text-2xl font-bold text-orange-600 mb-4">This Month’s Prizes</h3>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 justify-center">
@@ -61,15 +57,21 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 🧩 AdZone Mid */}
+      <motion.div
+        animate={{ x: [0, -200, 0] }}
+        transition={{ repeat: Infinity, duration: 12, ease: "linear" }}
+        className="text-orange-500 font-semibold text-lg mb-8"
+      >
+        Join the fun • Win Big • Every Week/Month • Win Data/Airtime Weekly
+      </motion.div>
+
       <div className="w-full max-w-4xl mb-10">
         <AdZoneDisplay zone="landing-mid" />
       </div>
 
-      {/* 🌐 SkillLink Banner */}
       <SkillLinkBanner />
 
-      {/* 🏅 Recent Winners */}
+      {/* Recent Winners */}
       <section className="w-full bg-orange-50 py-8 border-y border-orange-200 mb-10">
         <h3 className="text-xl font-semibold text-orange-600 mb-4">Recent Winners</h3>
         <p className="text-gray-700">
@@ -78,13 +80,14 @@ export default function LandingPage() {
         </p>
       </section>
 
-      {/* 🤝 Partners Section */}
+      {/* Partners */}
       <section className="w-full bg-orange-50 py-12 border-t border-orange-200">
         <div className="max-w-6xl mx-auto px-4 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-orange-600 mb-6">Our Partners</h2>
           <p className="text-gray-700 mb-8">
             Proudly supported by organizations and brands that believe in empowerment, growth, and giving back.
           </p>
+
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 items-center justify-center">
             <a href="https://solarizesolutions.com.ng" target="_blank" rel="noopener noreferrer" className="opacity-80 hover:opacity-100 transition">
               <Image src="/partners/solarize.png" alt="Solarize Solutions" width={120} height={50} className="mx-auto" loading="lazy"/>
@@ -101,12 +104,10 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* 📢 Bottom Ad Zone */}
       <div className="w-full max-w-4xl mb-10">
         <AdZoneDisplay zone="landing-bottom" />
       </div>
 
-      {/* ⚙️ Footer */}
       <footer className="mt-8 text-sm text-gray-500">
         App designed by <span className="text-orange-600 font-semibold">FalconerOne Technologies</span>
       </footer>
