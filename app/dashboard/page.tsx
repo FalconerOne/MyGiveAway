@@ -5,36 +5,35 @@ import ReferralsPanel from "@/components/dashboard/ReferralsPanel";
 import PrizeClaimPanel from "@/components/dashboard/PrizeClaimPanel";
 import LeaderboardEnhanced from "@/components/dashboard/LeaderboardEnhanced";
 import AdminTrueCounts from "@/components/dashboard/AdminTrueCounts";
-import RecentActivityList from "@/components/dashboard/RecentActivityList";
-import WinnerCelebration from "@/components/dashboard/WinnerCelebration";
-import AdZoneDisplay from "@/components/global/AdZoneDisplay";
+import WinnerCelebration from "@/components/global/WinnerCelebration";
+import AdZoneDisplay from "@/components/ads/AdZoneDisplay";
 import SkillLinkBanner from "@/components/global/SkillLinkBanner";
-import { useState } from "react";
 
 export default function DashboardPage() {
-  const [celebrate, setCelebrate] = useState(false);
-
   return (
-    <main className="min-h-screen bg-gradient-to-b from-orange-50 to-white p-6 flex flex-col gap-6 items-center">
-      <PointsDisplay />
-      <ReferralsPanel />
-      <PrizeClaimPanel />
-      <LeaderboardEnhanced />
-      <AdminTrueCounts />
-      <AdZoneDisplay zone="dashboard-top" />
-      <SkillLinkBanner />
-      <RecentActivityList />
+    <main className="min-h-screen px-6 py-12 bg-gradient-to-b from-orange-50 to-white space-y-12">
 
-      {/* Example trigger */}
-      <button
-        className="mt-4 bg-orange-500 text-white px-6 py-2 rounded-full shadow"
-        onClick={() => setCelebrate(true)}
-      >
-        Trigger Winner Celebration
-      </button>
+      <WinnerCelebration />
 
-      <WinnerCelebration winnerName="Chinedu A." prizeName="Smartwatch" trigger={celebrate} />
-      <AdZoneDisplay zone="dashboard-bottom" />
+      <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+        <PointsDisplay />
+        <ReferralsPanel />
+        <PrizeClaimPanel />
+        <AdminTrueCounts />
+      </section>
+
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <LeaderboardEnhanced />
+        <div className="space-y-6">
+          <AdZoneDisplay zone="dashboard-top" />
+          <SkillLinkBanner />
+        </div>
+      </section>
+
+      <section className="w-full max-w-4xl mx-auto">
+        <AdZoneDisplay zone="dashboard-bottom" />
+      </section>
+
     </main>
   );
 }
