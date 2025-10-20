@@ -2,53 +2,50 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import { motion } from "framer-motion";
 
-interface LeaderboardUser {
-  id: string;
+interface LeaderboardEntry {
   username: string;
   points: number;
 }
 
 export default function LeaderboardEnhanced() {
-  const [users, setUsers] = useState<LeaderboardUser[]>([]);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [leaders, setLeaders] = useState<LeaderboardEntry[]>([]);
 
   useEffect(() => {
     async function fetchLeaderboard() {
-      const user = supabase.auth.user();
-      if (!user) return;
-
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("role")
-        .eq("id", user.id)
-        .single();
-
-      setIsAdmin(profile?.role === "admin");
-
       const { data } = await supabase
-        .from("profiles")
-        .select("id, username, points")
-        .order("points", { ascending: false })
-        .limit(isAdmin ? 100 : 60);
+        .from("points")
+        .select("user_id, total, profiles(username)")
+        .order("total", { ascending: false })
+        .limit(10);
 
-      if (data) setUsers(data as LeaderboardUser[]);
+      if (data) {
+        const formatted = data.map((item: any) => ({
+          username: item.profiles?.username || "Unknown",
+          points: item.total || 0,
+        }));
+        setLeaders(formatted);
+      }
     }
-
     fetchLeaderboard();
-  }, [isAdmin]);
+  }, []);
 
   return (
-    <div className="bg-white rounded-xl shadow p-6 w-full max-w-2xl">
-      <h3 className="text-orange-600 font-bold text-xl mb-4">Leaderboard</h3>
-      <ul className="divide-y divide-gray-200">
-        {users.map((u, index) => (
-          <li key={u.id} className="flex justify-between p-2">
-            <span>
-              {index + 1}. {u.username}
-            </span>
-            <span className="font-semibold">{u.points}</span>
-          </li>
+    <div className="bg-white rounded-xl shadow p-6 w-full max-w-lg mx-auto">
+      <h3 className="text-orange-600 font-bold text-xl mb-4 text-center">Top Players</h3>
+      <ul>
+        {leaders.map((user, i) => (
+          <motion.li
+            key={i}
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3, delay: i * 0.1 }}
+            className="flex justify-between py-2 border-b border-gray-100"
+          >
+            <span>{i + 1}. {user.username}</span>
+            <span className="font-bold">{user.points}</span>
+          </motion.li>
         ))}
       </ul>
     </div>
