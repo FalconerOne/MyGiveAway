@@ -1,14 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const banners = [
   "🎯 Got Skills? Turn them into Cash on SkillLink Africa!",
   "💼 Your hustle fit pay — Link up with real gigs on SkillLink Africa!",
   "🚀 Don’t just wait for giveaways — start earning on SkillLink!",
   "💡 Show your talent, connect across Africa — SkillLink!",
-  "🔥 From Lagos to Nairobi — Get paid for your skill on SkillLinkAfrica.ng!"
 ];
 
 export default function SkillLinkBanner() {
@@ -17,15 +16,24 @@ export default function SkillLinkBanner() {
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % banners.length);
-    }, 5000);
+    }, 5000); // rotates every 5 seconds
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="bg-orange-100 rounded-xl shadow p-4 w-full max-w-4xl mx-auto my-6 text-center text-orange-700 font-semibold">
-      <Link href="https://SkillLinkAfrica.ng" target="_blank" className="hover:underline">
-        {banners[index]}
-      </Link>
+    <div className="w-full max-w-5xl mx-auto my-6 overflow-hidden rounded-xl shadow bg-white p-4 text-center">
+      <AnimatePresence mode="wait">
+        <motion.p
+          key={index}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.5 }}
+          className="text-orange-600 font-bold"
+        >
+          {banners[index]}
+        </motion.p>
+      </AnimatePresence>
     </div>
   );
 }
