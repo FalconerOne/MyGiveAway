@@ -1,43 +1,32 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabaseClient";
 
-interface AdZoneProps {
+interface AdZoneDisplayProps {
   zone: string;
 }
 
-interface Ad {
-  id: string;
-  image_url: string;
-  link: string;
-}
+export default function AdZoneDisplay({ zone }: AdZoneDisplayProps) {
+  const ads = [
+    <div key="ad1" className="bg-orange-100 p-4 rounded shadow text-center">
+      Ad 1 Content for {zone}
+    </div>,
+    <div key="ad2" className="bg-pink-100 p-4 rounded shadow text-center">
+      Ad 2 Content for {zone}
+    </div>,
+    <div key="ad3" className="bg-yellow-100 p-4 rounded shadow text-center">
+      Ad 3 Content for {zone}
+    </div>,
+  ];
 
-export default function AdZoneDisplay({ zone }: AdZoneProps) {
-  const [ads, setAds] = useState<Ad[]>([]);
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    async function fetchAds() {
-      const { data } = await supabase
-        .from("ads")
-        .select("*")
-        .eq("zone", zone)
-        .order("priority", { ascending: true });
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % ads.length);
+    }, 6000); // rotates every 6 seconds
+    return () => clearInterval(interval);
+  }, []);
 
-      if (data) setAds(data);
-    }
-    fetchAds();
-  }, [zone]);
-
-  if (ads.length === 0) return null;
-
-  return (
-    <div className="flex flex-wrap justify-center gap-4">
-      {ads.map((ad) => (
-        <a key={ad.id} href={ad.link} target="_blank" rel="noopener noreferrer">
-          <img src={ad.image_url} alt={`Ad ${ad.id}`} className="rounded-lg shadow max-h-32" />
-        </a>
-      ))}
-    </div>
-  );
+  return <div className="w-full">{ads[index]}</div>;
 }
