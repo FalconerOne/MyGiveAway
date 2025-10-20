@@ -1,35 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabaseClient";
+import { FC } from "react";
 
-interface AdZoneProps {
-  zone: string; // e.g., "landing-bottom", "profile-mid", "dashboard-top"
+interface AdZoneDisplayProps {
+  zone: "landing-mid" | "landing-bottom" | "dashboard-top" | "dashboard-bottom";
 }
 
-export default function AdZone({ zone }: AdZoneProps) {
-  const [adCode, setAdCode] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchAd = async () => {
-      const { data, error } = await supabase
-        .from("ad_zones")
-        .select("code")
-        .eq("zone", zone)
-        .maybeSingle();
-
-      if (!error && data?.code) setAdCode(data.code);
-    };
-
-    fetchAd();
-  }, [zone]);
-
-  if (!adCode) return null; // Don’t render empty blocks
-
+const AdZoneDisplay: FC<AdZoneDisplayProps> = ({ zone }) => {
   return (
-    <div
-      className="w-full my-10 flex justify-center"
-      dangerouslySetInnerHTML={{ __html: adCode }}
-    />
+    <div className="w-full bg-gray-100 rounded-lg p-4 shadow text-center">
+      <p className="text-gray-500 font-medium">
+        {`[AdZone: ${zone}] Placeholder for dynamic ad content`}
+      </p>
+    </div>
   );
-}
+};
+
+export default AdZoneDisplay;
