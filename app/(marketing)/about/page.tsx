@@ -1,56 +1,48 @@
 "use client";
 
+import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import CTAButton from "@/components/global/CTAButton";
 
-interface CardProps {
-  title: string;
-  description: string;
-}
-
-function InfoCard({ title, description }: CardProps) {
-  return (
-    <motion.div
-      className="bg-white rounded-xl shadow-md p-6 flex flex-col gap-2 text-center"
-      initial={{ opacity: 0, y: 10 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
-    >
-      <h4 className="text-xl font-bold text-orange-600">{title}</h4>
-      <p className="text-gray-700">{description}</p>
-    </motion.div>
-  );
-}
-
 export default function AboutPage() {
   return (
-    <main className="min-h-screen px-6 py-12 bg-gradient-to-b from-orange-50 to-white flex flex-col gap-12 items-center">
-
+    <main className="min-h-screen bg-gradient-to-b from-orange-50 to-white px-6 py-12">
       <motion.h1
-        className="text-4xl md:text-6xl font-bold text-orange-600 mb-6"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
+        className="text-4xl md:text-5xl font-bold text-orange-600 text-center mb-8"
       >
         About MyGiveAway
       </motion.h1>
 
-      {/* 📌 Community / Mission / Team / Timeline Cards */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full max-w-6xl">
-        <InfoCard title="Community" description="A vibrant community connecting winners, participants, and supporters of MyGiveAway." />
-        <InfoCard title="Mission" description="To create fun, fair, and exciting giveaways while promoting engagement and rewards." />
-        <InfoCard title="Team" description="Our dedicated team drives innovation, engagement, and ensures transparency in all giveaways." />
-        <InfoCard title="Timeline" description="From inception to today, our journey highlights growth, milestones, and major successes." />
-      </section>
+      {/* Community / Mission / Team / Timeline Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div className="bg-white rounded-xl shadow p-6 text-center">
+          <h3 className="text-orange-600 font-bold mb-2">Community</h3>
+          <p className="text-gray-700 mb-4">Connecting users across Africa to exciting rewards and opportunities.</p>
+          <CTAButton href="/marketing/edit-community" text="Edit Community" variant="secondary" />
+        </div>
 
-      {/* 🎯 CTA Buttons to Edit Sections */}
-      <section className="flex flex-wrap justify-center gap-4">
-        <CTAButton href="/dashboard/edit-mission" text="Edit Mission" variant="primary" />
-        <CTAButton href="/dashboard/edit-team" text="Edit Team" variant="primary" />
-        <CTAButton href="/dashboard/edit-timeline" text="Edit Timeline" variant="primary" />
-      </section>
+        <div className="bg-white rounded-xl shadow p-6 text-center">
+          <h3 className="text-orange-600 font-bold mb-2">Mission</h3>
+          <p className="text-gray-700 mb-4">Empower users through giveaways while supporting charity and skill growth.</p>
+          <CTAButton href="/marketing/edit-mission" text="Edit Mission" variant="secondary" />
+        </div>
 
+        <div className="bg-white rounded-xl shadow p-6 text-center">
+          <h3 className="text-orange-600 font-bold mb-2">Team</h3>
+          <p className="text-gray-700 mb-4">Meet the creators and administrators powering MyGiveAway.</p>
+          <CTAButton href="/marketing/edit-team" text="Edit Team" variant="secondary" />
+        </div>
+
+        <div className="bg-white rounded-xl shadow p-6 text-center">
+          <h3 className="text-orange-600 font-bold mb-2">Timeline</h3>
+          <p className="text-gray-700 mb-4">Our journey so far and the milestones ahead.</p>
+          <CTAButton href="/marketing/edit-timeline" text="Edit Timeline" variant="secondary" />
+        </div>
+      </div>
     </main>
   );
 }
