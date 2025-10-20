@@ -1,45 +1,33 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
+import { useState, useEffect } from "react";
 
-const slogans = [
-  "🎯 Got Skills? Turn them into Cash on SkillLink Africa!",
-  "💼 Your hustle fit pay — Link up with real gigs on SkillLink Africa!",
-  "🚀 Don’t just wait for giveaways — start earning on SkillLink!",
-  "💡 Show your talent, connect across Africa — SkillLink!",
-  "🔥 From Lagos to Nairobi — Get paid for your skill on SkillLinkAfrica.ng!",
+const banners = [
+  "/banners/skilllink-banner1.jpg",
+  "/banners/skilllink-banner2.jpg"
 ];
 
 export default function SkillLinkBanner() {
-  const [index, setIndex] = useState(0);
+  const [current, setCurrent] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % slogans.length);
-    }, 4000); // rotates every 4 seconds
+      setCurrent((prev) => (prev + 1) % banners.length);
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="w-full mt-16 mb-10">
-      <motion.div
-        className="bg-gradient-to-r from-pink-500 to-purple-600 rounded-2xl shadow-lg text-white text-center py-6 cursor-pointer hover:scale-[1.02] transition"
-        onClick={() => window.open("https://www.skilllinkafrica.ng", "_blank")}
-      >
-        <AnimatePresence mode="wait">
-          <motion.p
-            key={index}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.6 }}
-            className="text-lg md:text-xl font-medium"
-          >
-            {slogans[index]}
-          </motion.p>
-        </AnimatePresence>
-      </motion.div>
+    <div className="w-full max-w-4xl mx-auto mb-10 rounded-lg overflow-hidden shadow-lg">
+      <Image
+        src={banners[current]}
+        alt="SkillLink Banner"
+        width={1200}
+        height={300}
+        className="w-full h-auto object-cover"
+        priority
+      />
     </div>
   );
 }
