@@ -1,36 +1,41 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
-interface Props {
+interface WinnerCelebrationProps {
   trigger: boolean;
 }
 
-export default function WinnerCelebration({ trigger }: Props) {
-  const [show, setShow] = useState(false);
-
+export default function WinnerCelebration({ trigger }: WinnerCelebrationProps) {
   useEffect(() => {
     if (trigger) {
-      setShow(true);
-      const timer = setTimeout(() => setShow(false), 5000);
-      return () => clearTimeout(timer);
+      const audio = new Audio("/sounds/celebration.mp3");
+      audio.play().catch(() => {});
     }
   }, [trigger]);
 
-  if (!show) return null;
-
   return (
-    <motion.div
-      initial={{ scale: 0 }}
-      animate={{ scale: 1 }}
-      exit={{ scale: 0 }}
-      className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
-    >
-      <div className="bg-white rounded-xl shadow p-8 text-center">
-        <h2 className="text-3xl font-bold text-orange-600 mb-4">🎉 Winner! 🎉</h2>
-        <p className="text-gray-700">Congratulations to our lucky participant!</p>
-      </div>
-    </motion.div>
+    <AnimatePresence>
+      {trigger && (
+        <motion.div
+          key="celebration"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50"
+        >
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0 }}
+            className="bg-white rounded-2xl p-8 shadow-lg text-center"
+          >
+            <h2 className="text-3xl font-bold text-orange-600 mb-4">🎉 Congratulations! 🎉</h2>
+            <p className="text-gray-700">A winner has been finalized!</p>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
