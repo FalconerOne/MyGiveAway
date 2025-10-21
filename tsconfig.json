@@ -1,3 +1,4 @@
+--xxx REPLACE CURRENT tsconfig.json WITH MERGED CONTENT BELOW (keep all your existing settings, just ensure baseUrl + paths exist)
 {
   "compilerOptions": {
     "target": "esnext",
