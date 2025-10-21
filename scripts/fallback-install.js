@@ -23,4 +23,9 @@ for (const dep of safeDeps) {
     console.log(`Installing ${dep}...`);
     execSync(`npm install ${dep}`, { stdio: "inherit" });
   } catch (err) {
-    console.error(`❌ Failed to install
+    console.error(`❌ Failed to install ${dep}:`, err.message);
+    process.exit(1);
+  }
+}
+
+console.log("✅ All fallback packages installed successfully.");
