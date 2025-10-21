@@ -1,9 +1,3 @@
-/**
- * fallback-install.js
- * Ensures known-safe dependency versions for Radix and Supabase,
- * protects against ETARGET errors on Railway/Vercel builds.
- */
-
 import { execSync } from "child_process";
 
 const safeDeps = [
@@ -25,7 +19,7 @@ for (const dep of safeDeps) {
     execSync(`npm install ${dep}`, { stdio: "inherit" });
   } catch (err) {
     console.error(`❌ Failed to install ${dep}:`, err.message);
-    process.exit(1); // fail build if critical package fails
+    process.exit(1);
   }
 }
 
