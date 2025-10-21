@@ -28,7 +28,7 @@
     "@radix-ui/react-tooltip": "^1.1.3",
     "@headlessui/react": "^1.7.16",
     "@heroicons/react": "^2.1.3",
-    "@lucide/react": "^0.378.0",
+    "@lucide/react": "^0.377.0",
     "framer-motion": "^11.3.31",
     "recharts": "^2.10.3",
     "clsx": "^2.1.1",
