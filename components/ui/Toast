@@ -1,0 +1,20 @@
+--xxx CREATE components/ui/toast.tsx
+import * as React from 'react';
+import * as ToastPrimitive from '@radix-ui/react-toast';
+
+interface ToastProps {
+  title: string;
+  description?: string;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+export const Toast: React.FC<ToastProps> = ({ title, description, open, onOpenChange }) => (
+  <ToastPrimitive.Provider>
+    <ToastPrimitive.Root open={open} onOpenChange={onOpenChange} className="bg-gray-900 text-white rounded-md p-4 shadow">
+      <ToastPrimitive.Title className="font-bold">{title}</ToastPrimitive.Title>
+      {description && <ToastPrimitive.Description>{description}</ToastPrimitive.Description>}
+    </ToastPrimitive.Root>
+    <ToastPrimitive.Viewport className="fixed bottom-4 right-4 flex flex-col gap-2" />
+  </ToastPrimitive.Provider>
+);
