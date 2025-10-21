@@ -1,87 +1,87 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { createClient } from "@supabase/supabase-js";
-import { Loader2, UserPlus, Trash2 } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { getTeamData } from "@/utils/aboutApi";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+interface TeamMember {
+  id: number;
+  name: string;
+  role: string;
+  image?: string;
+}
 
-export default function TeamEditor() {
-  const [team, setTeam] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [form, setForm] = useState({ name: "", role: "", image_url: "" });
+const TeamEditor: React.FC = () => {
+  const [team, setTeam] = useState<TeamMember[]>([]);
+  const [newMember, setNewMember] = useState({
+    name: "",
+    role: "",
+    image: "",
+  });
 
   useEffect(() => {
-    fetchTeam();
+    const fetchData = async () => {
+      const data = await getTeamData();
+      setTeam(data);
+    };
+    fetchData();
   }, []);
 
-  async function fetchTeam() {
-    setLoading(true);
-    const { data, error } = await supabase
-      .from("about_team")
-      .select("*")
-      .order("id", { ascending: true });
-    if (!error) setTeam(data || []);
-    setLoading(false);
-  }
-
-  async function triggerRevalidate() {
-    try {
-      await fetch("/api/revalidate-about", {
-        method: "POST",
-        headers: {
-          "x-revalidate-secret":
-            process.env.NEXT_PUBLIC_REVALIDATE_SECRET || "solarizedng_about_refresh",
-        },
-      });
-    } catch (err) {
-      console.warn("Revalidate trigger failed:", err);
-    }
-  }
-
-  async function addMember() {
-    if (!form.name || !form.role) return;
-    const { error } = await supabase.from("about_team").insert([form]);
-    if (!error) {
-      setForm({ name: "", role: "", image_url: "" });
-      await fetchTeam();
-      await triggerRevalidate(); // ✅ D7.3 auto-refresh About page
-    } else {
-      console.error("Insert error:", error.message);
-    }
-  }
-
-  async function deleteMember(id: number) {
-    const { error } = await supabase.from("about_team").delete().eq("id", id);
-    if (!error) {
-      await fetchTeam();
-      await triggerRevalidate(); // ✅ D7.3 auto-refresh About page
-    }
-  }
+  const handleAdd = () => {
+    if (!newMember.name.trim() || !newMember.role.trim()) return;
+    setTeam([...team, { id: team.length + 1, ...newMember }]);
+    setNewMember({ name: "", role: "", image: "" });
+  };
 
   return (
     <div className="bg-gray-900 p-6 rounded-2xl shadow-md">
       <h2 className="text-2xl font-semibold mb-4">👥 Team Members</h2>
 
       {/* Add Form */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-6">
+      <div className="flex gap-2 mb-4">
         <input
           type="text"
-          placeholder="Full name"
-          value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-          className="flex-1 px-3 py-2 rounded bg-gray-800 text-white border border-gray-700"
+          placeholder="Name"
+          value={newMember.name}
+          onChange={(e) => setNewMember({ ...newMember, name: e.target.value })}
+          className="px-3 py-2 rounded bg-gray-800 text-white flex-1"
         />
         <input
           type="text"
-          placeholder="Role / Position"
-          value={form.role}
-          onChange={(e) => setForm({ ...form, role: e.target.value })}
-          className="flex-1 px-3 py-2 rounded bg-gray-800 text-white border border-gray-700"
+          placeholder="Role"
+          value={newMember.role}
+          onChange={(e) => setNewMember({ ...newMember, role: e.target.value })}
+          className="px-3 py-2 rounded bg-gray-800 text-white flex-1"
         />
-        <input
-          type="text"
-          placeholder="Image URL (optional)"
-          value={form.image_url}
+        <button
+          onClick={handleAdd}
+          className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-white"
+        >
+          Add
+        </button>
+      </div>
+
+      {/* Display List */}
+      <div className="space-y-3">
+        {team.map((member) => (
+          <div
+            key={member.id}
+            className="flex items-center justify-between bg-gray-800 p-3 rounded-lg"
+          >
+            <div>
+              <p className="font-semibold">{member.name}</p>
+              <p className="text-gray-400 text-sm">{member.role}</p>
+            </div>
+            {member.image && (
+              <img
+                src={member.image}
+                alt={member.name}
+                className="w-10 h-10 rounded-full object-cover"
+              />
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default TeamEditor;
