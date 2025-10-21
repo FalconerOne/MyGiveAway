@@ -1,40 +1,46 @@
 {
   "name": "mygiveaway",
-  "version": "1.0.0",
+  "version": "0.1.2",
   "private": true,
+  "engines": {
+    "node": "18.20.3",
+    "npm": ">=9.8.0"
+  },
   "scripts": {
-    "preinstall": "npm config set registry https://registry.npmjs.org/",
-    "install": "npm install || (npm install @supabase/auth-helpers-nextjs@0.9.5)",
-    "build": "next build",
     "dev": "next dev",
+    "build": "npm run prebuild && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prebuild": "npm config set registry https://registry.npmjs.org/"
   },
   "dependencies": {
-    "@supabase/auth-helpers-nextjs": "^0.10.0",
-    "@supabase/auth-helpers-react": "^0.4.1",
-    "@supabase/supabase-js": "^2.44.0",
-    "framer-motion": "^10.16.5",
-    "lucide-react": "^0.381.0",
-    "next": "14.2.5",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "recharts": "^2.10.3",
-    "shadcn-ui": "^1.0.0",
+    "@supabase/auth-helpers-nextjs": "0.9.5",
+    "@supabase/ssr": "^1.0.0",
+    "@supabase/supabase-js": "^2.43.0",
+    "@tanstack/react-query": "^4.34.0",
+    "axios": "^1.7.7",
+    "clsx": "^2.0.0",
+    "framer-motion": "^10.12.16",
+    "lodash": "^4.17.21",
+    "next": "14.2.3",
+    "next-auth": "^4.24.7",
+    "next-seo": "^6.2.0",
+    "react": "18.2.0",
+    "react-confetti": "^6.1.0",
+    "react-dom": "18.2.0",
+    "react-icons": "^5.3.0",
+    "react-toastify": "^9.2.3",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "autoprefixer": "10.4.20",
-    "eslint": "8.57.0",
-    "eslint-config-next": "14.2.5",
-    "postcss": "8.4.41",
-    "tailwindcss": "3.4.13",
-    "typescript": "5.5.4"
-  },
-  "engines": {
-    "node": ">=18.17.0"
-  },
-  "overrides": {
-    "@supabase/auth-helpers-nextjs": "0.10.0"
+    "@types/node": "20.6.2",
+    "@types/react": "18.2.14",
+    "@types/react-dom": "18.2.7",
+    "autoprefixer": "^10.4.20",
+    "eslint": "8.56.0",
+    "eslint-config-next": "14.2.3",
+    "postcss": "^8.4.41",
+    "tailwindcss": "^3.4.13",
+    "typescript": "5.4.5"
   }
 }
