@@ -10,11 +10,10 @@ const safeDeps = [
   "@radix-ui/react-toast@1.1.3",
   "@supabase/auth-helpers-nextjs@0.9.0",
   "next-pwa@5.6.0",
-  "lucide-react@0.261.0",
-  "react-icons@4.11.0",
   "jspdf@2.5.1",
   "jspdf-autotable@3.5.28",
-  "xlsx@0.18.5"
+  "xlsx@0.18.5",
+  "resend@1.5.0"
 ];
 
 console.log("🛠️ Running fallback install for safe dependencies...");
