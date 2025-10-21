@@ -1,4 +1,3 @@
---xxx REPLACE /scripts/fallback-install.js WITH BELOW
 import { execSync } from "child_process";
 
 const safeDeps = [
@@ -24,9 +23,4 @@ for (const dep of safeDeps) {
     console.log(`Installing ${dep}...`);
     execSync(`npm install ${dep}`, { stdio: "inherit" });
   } catch (err) {
-    console.error(`❌ Failed to install ${dep}:`, err.message);
-    process.exit(1);
-  }
-}
-
-console.log("✅ All fallback packages installed successfully.");
+    console.error(`❌ Failed to install
