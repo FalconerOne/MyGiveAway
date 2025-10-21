@@ -8,7 +8,8 @@ const safeDeps = [
   "@radix-ui/react-tooltip@1.1.3",
   "@radix-ui/react-tabs@1.1.1",
   "@radix-ui/react-toast@1.1.3",
-  "@supabase/auth-helpers-nextjs@0.9.0"
+  "@supabase/auth-helpers-nextjs@0.9.0",
+  "next-pwa@6.6.1"
 ];
 
 console.log("🛠️ Running fallback install for safe dependencies...");
