@@ -14,22 +14,17 @@
     "postinstall": "npm rebuild || true"
   },
   "dependencies": {
-    "@supabase/auth-helpers-nextjs": "0.10.0",
-    "@supabase/supabase-js": "^2.42.3",
-    "@tanstack/react-query": "^4.34.0",
-    "axios": "^1.6.2",
-    "clsx": "^2.0.0",
-    "framer-motion": "^10.12.16",
-    "lodash": "^4.17.21",
-    "next": "14.2.3",
-    "next-auth": "^4.24.1",
-    "next-seo": "^6.0.1",
-    "react": "18.2.0",
-    "react-confetti": "^6.1.0",
-    "react-dom": "18.2.0",
-    "react-icons": "^4.10.1",
-    "react-toastify": "^9.2.3",
-    "uuid": "^9.0.0"
+    "@supabase/supabase-js": "^2.44.0",
+    "@supabase/ssr": "^0.4.1",
+    "react-toastify": "^9.1.3",
+    "next": "14.2.6",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "framer-motion": "^11.0.8",
+    "lucide-react": "^0.321.0",
+    "recharts": "^2.9.0",
+    "@/components/ui": "latest",
+    "@/lib/utils": "latest"
   },
   "devDependencies": {
     "@types/node": "20.6.2",
