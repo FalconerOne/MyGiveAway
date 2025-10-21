@@ -1,3 +1,4 @@
+--xxx REPLACE /scripts/fallback-install.js WITH BELOW
 import { execSync } from "child_process";
 
 const safeDeps = [
@@ -13,7 +14,7 @@ const safeDeps = [
   "jspdf@2.5.1",
   "jspdf-autotable@3.5.28",
   "xlsx@0.18.5",
-  "resend@1.5.0"
+  "resend@'>=5.0.0 <=6.1.0'"
 ];
 
 console.log("🛠️ Running fallback install for safe dependencies...");
