@@ -16,12 +16,18 @@ console.log("🛠️ Running fallback install for safe dependencies...");
 
 for (const dep of safeDeps) {
   try {
-    console.log(`Installing ${dep}...`);
-    execSync(`npm install ${dep}`, { stdio: "inherit" });
-  } catch (err) {
-    console.error(`❌ Failed to install ${dep}:`, err.message);
-    process.exit(1);
+    // Check if already installed
+    require.resolve(dep.split("@")[0]);
+    console.log(`✅ ${dep} is already installed`);
+  } catch {
+    try {
+      console.log(`⚡ Installing ${dep}...`);
+      execSync(`npm install ${dep} --legacy-peer-deps`, { stdio: "inherit" });
+      console.log(`✅ Installed ${dep}`);
+    } catch (err) {
+      console.warn(`❌ Could not install ${dep}, skipping: ${err.message}`);
+    }
   }
 }
 
-console.log("✅ All fallback packages installed successfully.");
+console.log("🎉 Fallback check complete.");
