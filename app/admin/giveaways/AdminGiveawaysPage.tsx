@@ -3,84 +3,86 @@
 import React, { useState, useEffect } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Button } from "@/components/ui/button";
-import { Toast } from "@/components/ui/toast";
+import { useToast } from "@/providers/GlobalToastProvider";
 import Confetti from "react-confetti";
-
-interface Giveaway {
-  id: string;
-  title: string;
-  prize_name: string;
-  status: string;
-}
 
 export default function AdminGiveawaysPage() {
   const supabase = createClientComponentClient();
-  const [giveaways, setGiveaways] = useState<Giveaway[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [toastOpen, setToastOpen] = useState(false);
-  const [toastMessage, setToastMessage] = useState({ title: "", description: "" });
-  const [confetti, setConfetti] = useState(false);
+  const { showToast } = useToast();
+
+  const [giveaways, setGiveaways] = useState<any[]>([]);
+  const [selectedWinner, setSelectedWinner] = useState<any | null>(null);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   useEffect(() => {
-    loadGiveaways();
-  }, []);
+    const fetchGiveaways = async () => {
+      const { data, error } = await supabase.from("giveaways").select("*");
+      if (!error && data) setGiveaways(data);
+    };
+    fetchGiveaways();
+  }, [supabase]);
 
-  async function loadGiveaways() {
-    const { data, error } = await supabase.from("giveaways").select("*").order("created_at", { ascending: false });
-    if (!error && data) setGiveaways(data);
-  }
+  const finalizeWinner = async (giveawayId: string) => {
+    const { data: entries, error } = await supabase
+      .from("entries")
+      .select("*")
+      .eq("giveaway_id", giveawayId);
 
-  async function finalizeWinner(id: string) {
-    setLoading(true);
-    const { data, error } = await supabase
-      .from("giveaways")
-      .update({ status: "winner_finalized" })
-      .eq("id", id)
-      .select();
-
-    if (error) {
-      setToastMessage({ title: "Error", description: "Could not finalize winner." });
-      setToastOpen(true);
-    } else {
-      setToastMessage({ title: "Winner Finalized!", description: "Confetti celebration triggered!" });
-      setToastOpen(true);
-      setConfetti(true);
-      setTimeout(() => setConfetti(false), 5000);
-      await loadGiveaways();
+    if (error || !entries || entries.length === 0) {
+      showToast("No valid entries", "There are no participants for this giveaway.");
+      return;
     }
 
-    setLoading(false);
-  }
+    const randomIndex = Math.floor(Math.random() * entries.length);
+    const winner = entries[randomIndex];
+
+    const { error: updateError } = await supabase
+      .from("giveaways")
+      .update({ winner_id: winner.user_id, status: "completed" })
+      .eq("id", giveawayId);
+
+    if (updateError) {
+      showToast("Error", "Failed to finalize winner.");
+      return;
+    }
+
+    setSelectedWinner(winner);
+    setShowConfetti(true);
+    showToast("🎉 Winner Finalized!", `User ${winner.user_id} has won the giveaway!`);
+
+    setTimeout(() => setShowConfetti(false), 7000);
+  };
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-semibold mb-6">Giveaways Management</h1>
-
-      <div className="grid gap-4">
-        {giveaways.map((g) => (
-          <div key={g.id} className="p-4 bg-white rounded-xl shadow flex justify-between items-center">
-            <div>
-              <p className="font-semibold">{g.title}</p>
-              <p className="text-sm text-gray-600">{g.prize_name}</p>
+      {showConfetti && <Confetti />}
+      <h1 className="text-2xl font-bold mb-4">Admin Giveaways</h1>
+      {giveaways.length === 0 ? (
+        <p>No giveaways found.</p>
+      ) : (
+        <div className="space-y-4">
+          {giveaways.map((g) => (
+            <div key={g.id} className="p-4 border rounded-md shadow-sm flex justify-between items-center">
+              <div>
+                <h2 className="font-semibold">{g.title}</h2>
+                <p className="text-sm text-gray-600">Status: {g.status}</p>
+              </div>
+              <Button
+                onClick={() => finalizeWinner(g.id)}
+                disabled={g.status === "completed"}
+              >
+                {g.status === "completed" ? "Winner Finalized" : "Finalize Winner"}
+              </Button>
             </div>
-            <Button
-              disabled={loading || g.status === "winner_finalized"}
-              onClick={() => finalizeWinner(g.id)}
-            >
-              {g.status === "winner_finalized" ? "Winner Finalized" : "Finalize Winner"}
-            </Button>
-          </div>
-        ))}
-      </div>
-
-      <Toast
-        title={toastMessage.title}
-        description={toastMessage.description}
-        open={toastOpen}
-        onOpenChange={setToastOpen}
-      />
-
-      {confetti && <Confetti numberOfPieces={300} recycle={false} />}
+          ))}
+        </div>
+      )}
+      {selectedWinner && (
+        <div className="mt-6 p-4 bg-green-100 rounded-md">
+          <h2 className="text-lg font-semibold">Latest Winner</h2>
+          <p>User ID: {selectedWinner.user_id}</p>
+        </div>
+      )}
     </div>
   );
 }
