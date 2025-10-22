@@ -1,5 +1,6 @@
 import "./globals.css";
 import GlobalToastProvider from "@/components/ui/GlobalToastProvider";
+import GlobalWinnerListener from "@/components/global/GlobalWinnerListener";
 
 export const metadata = {
   title: "MyGiveAway App",
@@ -7,10 +8,15 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const userRole = "guest"; // 🔹 Temporary placeholder — replace with real user.role from session later
+
   return (
     <html lang="en">
       <body>
-        <GlobalToastProvider>{children}</GlobalToastProvider>
+        <GlobalToastProvider>
+          <GlobalWinnerListener userRole={userRole} />
+          {children}
+        </GlobalToastProvider>
       </body>
     </html>
   );
