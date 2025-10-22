@@ -1,58 +1,68 @@
 "use client";
-import { createContext, useContext, useState, useCallback } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 
-interface Toast {
-  id: string;
-  message: string;
-  type?: "success" | "error" | "info";
-}
+import { Toaster, toast } from "react-hot-toast";
+import { ReactNode, useEffect } from "react";
 
-interface ToastContextType {
-  showToast: (message: string, type?: Toast["type"]) => void;
-}
-
-const ToastContext = createContext<ToastContextType | undefined>(undefined);
-
-export const useGlobalToast = () => {
-  const ctx = useContext(ToastContext);
-  if (!ctx) throw new Error("useGlobalToast must be used within GlobalToastProvider");
-  return ctx;
-};
-
-export default function GlobalToastProvider({ children }: { children: React.ReactNode }) {
-  const [toasts, setToasts] = useState<Toast[]>([]);
-
-  const showToast = useCallback((message: string, type: Toast["type"] = "info") => {
-    const id = crypto.randomUUID();
-    setToasts((prev) => [...prev, { id, message, type }]);
-    setTimeout(() => setToasts((prev) => prev.filter((t) => t.id !== id)), 3500);
+/**
+ * GlobalToastProvider
+ * Wraps the app with global toast notifications.
+ * Supports both automatic event-based and manual trigger toasts.
+ */
+export default function GlobalToastProvider({ children }: { children: ReactNode }) {
+  useEffect(() => {
+    // Example global startup toast (can be modified or removed)
+    console.log("✅ GlobalToastProvider initialized");
   }, []);
 
   return (
-    <ToastContext.Provider value={{ showToast }}>
+    <>
+      {/* Main Application Content */}
       {children}
-      <div className="fixed bottom-4 right-4 z-50 space-y-2">
-        <AnimatePresence>
-          {toasts.map((toast) => (
-            <motion.div
-              key={toast.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
-              className={`px-4 py-2 rounded-xl shadow-md text-white text-sm ${
-                toast.type === "success"
-                  ? "bg-green-600"
-                  : toast.type === "error"
-                  ? "bg-red-600"
-                  : "bg-blue-600"
-              }`}
-            >
-              {toast.message}
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
-    </ToastContext.Provider>
+
+      {/* Toast Notification System */}
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: "#333",
+            color: "#fff",
+            borderRadius: "10px",
+            padding: "12px 16px",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
+          },
+          success: {
+            iconTheme: {
+              primary: "#4ade80",
+              secondary: "#fff",
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: "#f87171",
+              secondary: "#fff",
+            },
+          },
+        }}
+      />
+    </>
   );
 }
+
+/**
+ * Optional helper: call anywhere in the app to trigger a toast.
+ * import { triggerToast } from "@/components/ui/GlobalToastProvider";
+ */
+export const triggerToast = (message: string, type: "success" | "error" | "info" = "info") => {
+  switch (type) {
+    case "success":
+      toast.success(message);
+      break;
+    case "error":
+      toast.error(message);
+      break;
+    default:
+      toast(message);
+  }
+};
