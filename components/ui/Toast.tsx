@@ -2,8 +2,9 @@
 
 import * as React from "react";
 import * as ToastPrimitive from "@radix-ui/react-toast";
+import { cn } from "@/lib/utils";
 
-interface ToastProps {
+export interface ToastProps {
   title: string;
   description?: string;
   open: boolean;
@@ -22,7 +23,9 @@ export const Toast: React.FC<ToastProps> = ({
     <ToastPrimitive.Root
       open={open}
       onOpenChange={onOpenChange}
-      className="bg-gray-900 text-white rounded-xl px-4 py-3 shadow-lg data-[state=open]:animate-slideIn data-[state=closed]:animate-slideOut"
+      className={cn(
+        "bg-gray-900 text-white rounded-xl px-4 py-3 shadow-lg data-[state=open]:animate-slideIn data-[state=closed]:animate-slideOut"
+      )}
     >
       <ToastPrimitive.Title className="font-semibold text-sm">
         {title}
