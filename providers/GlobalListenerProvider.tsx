@@ -1,48 +1,38 @@
-'use client';
+"use client";
 
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from "react";
+import { Toast } from "@/components/ui/toast";
 
-interface GlobalListenerContextProps {
-  dashboardData: any[];
-  refreshDashboard: () => Promise<void>;
+interface ToastContextProps {
+  showToast: (title: string, description?: string) => void;
 }
 
-const GlobalListenerContext = createContext<GlobalListenerContextProps | undefined>(undefined);
+const ToastContext = createContext<ToastContextProps | undefined>(undefined);
 
-export const GlobalListenerProvider = ({ children }: { children: ReactNode }) => {
-  const [dashboardData, setDashboardData] = useState<any[]>([]);
-
-  const fetchDashboard = async () => {
-    try {
-      const supabase = createRouteHandlerClient({ cookies });
-      const { data, error } = await supabase.from('dashboard').select('*');
-
-      if (error) {
-        console.error('GlobalListener fetch error:', error.message);
-        return;
-      }
-
-      setDashboardData(data || []);
-    } catch (err) {
-      console.error('GlobalListener fetch exception:', err);
-    }
-  };
-
-  useEffect(() => {
-    fetchDashboard();
-  }, []);
-
-  return (
-    <GlobalListenerContext.Provider value={{ dashboardData, refreshDashboard: fetchDashboard }}>
-      {children}
-    </GlobalListenerContext.Provider>
-  );
+export const useToast = () => {
+  const context = useContext(ToastContext);
+  if (!context) throw new Error("useToast must be used within GlobalToastProvider");
+  return context;
 };
 
-export const useGlobalListener = () => {
-  const context = useContext(GlobalListenerContext);
-  if (!context) {
-    throw new Error('useGlobalListener must be used within GlobalListenerProvider');
-  }
-  return context;
+export const GlobalToastProvider = ({ children }: { children: ReactNode }) => {
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState({ title: "", description: "" });
+
+  const showToast = (title: string, description?: string) => {
+    setMessage({ title, description: description || "" });
+    setOpen(true);
+  };
+
+  return (
+    <ToastContext.Provider value={{ showToast }}>
+      {children}
+      <Toast
+        title={message.title}
+        description={message.description}
+        open={open}
+        onOpenChange={setOpen}
+      />
+    </ToastContext.Provider>
+  );
 };
