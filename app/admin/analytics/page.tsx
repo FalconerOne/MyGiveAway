@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Card, Toast } from '@/components/ui';
-import { getAnalytics } from '@/supabase/analytics';
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { Card, Toast } from "@/components/ui";
+import { getAnalytics } from "@/supabase/analytics";
 
 interface EventData {
   id: string;
@@ -14,7 +16,10 @@ const AdminAnalyticsPage: React.FC = () => {
   const [toastOpen, setToastOpen] = useState(false);
 
   useEffect(() => {
-    getAnalytics().then((data) => setEvents(data as EventData[]));
+    getAnalytics().then((data) => {
+      setEvents(data as EventData[]);
+      setToastOpen(true);
+    });
   }, []);
 
   return (
@@ -29,6 +34,7 @@ const AdminAnalyticsPage: React.FC = () => {
           </Card>
         ))}
       </div>
+
       <Toast
         title="Analytics Loaded"
         description={`${events.length} events fetched`}
