@@ -1,8 +1,6 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { createRouteHandlerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
 
 interface GlobalListenerContextProps {
   dashboardData: any[];
