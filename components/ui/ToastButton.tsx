@@ -6,7 +6,7 @@ export default function ToastButton() {
 
   return (
     <button
-      onClick={() => showToast("This is a sample toast!", "success")}
+      onClick={() => showToast("🎉 Global Toast working perfectly!", "success")}
       className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
     >
       Test Toast
