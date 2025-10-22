@@ -1,38 +1,47 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, useCallback } from "react";
 import { Toast } from "@/components/ui/toast";
 
-interface ToastContextProps {
+interface GlobalToastContextProps {
   showToast: (title: string, description?: string) => void;
 }
 
-const ToastContext = createContext<ToastContextProps | undefined>(undefined);
+const GlobalToastContext = createContext<GlobalToastContextProps | undefined>(
+  undefined
+);
 
-export const useToast = () => {
-  const context = useContext(ToastContext);
-  if (!context) throw new Error("useToast must be used within GlobalToastProvider");
-  return context;
-};
-
-export const GlobalToastProvider = ({ children }: { children: ReactNode }) => {
+export const GlobalToastProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState({ title: "", description: "" });
+  const [toastContent, setToastContent] = useState({
+    title: "",
+    description: "",
+  });
 
-  const showToast = (title: string, description?: string) => {
-    setMessage({ title, description: description || "" });
+  const showToast = useCallback((title: string, description?: string) => {
+    setToastContent({ title, description: description || "" });
     setOpen(true);
-  };
+  }, []);
 
   return (
-    <ToastContext.Provider value={{ showToast }}>
+    <GlobalToastContext.Provider value={{ showToast }}>
       {children}
       <Toast
-        title={message.title}
-        description={message.description}
+        title={toastContent.title}
+        description={toastContent.description}
         open={open}
         onOpenChange={setOpen}
       />
-    </ToastContext.Provider>
+    </GlobalToastContext.Provider>
   );
+};
+
+export const useGlobalToast = (): GlobalToastContextProps => {
+  const context = useContext(GlobalToastContext);
+  if (!context) {
+    throw new Error("useGlobalToast must be used within GlobalToastProvider");
+  }
+  return context;
 };
