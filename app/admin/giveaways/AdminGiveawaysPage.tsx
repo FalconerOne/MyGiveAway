@@ -12,12 +12,20 @@ interface Giveaway {
   winner_id: string | null;
 }
 
+interface WinnerBroadcast {
+  giveaway_id: string;
+  title: string;
+  winner_message: string;
+  timestamp: string;
+}
+
 export default function AdminGiveawaysPage() {
   const supabase = createClientComponentClient();
   const { showToast } = useGlobalToast();
   const [giveaways, setGiveaways] = useState<Giveaway[]>([]);
   const [loading, setLoading] = useState(true);
   const [confettiVisible, setConfettiVisible] = useState(false);
+  const [broadcastMessage, setBroadcastMessage] = useState<WinnerBroadcast | null>(null);
 
   useEffect(() => {
     const fetchGiveaways = async () => {
@@ -32,6 +40,22 @@ export default function AdminGiveawaysPage() {
     };
 
     fetchGiveaways();
+  }, [supabase, showToast]);
+
+  useEffect(() => {
+    const channel = supabase
+      .channel("winner-broadcast")
+      .on("broadcast", { event: "winner_announcement" }, (payload) => {
+        const data = payload.payload as WinnerBroadcast;
+        setBroadcastMessage(data);
+        triggerConfetti();
+        showToast(data.winner_message, "success");
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [supabase, showToast]);
 
   const finalizeWinner = async (giveawayId: string) => {
@@ -54,13 +78,26 @@ export default function AdminGiveawaysPage() {
       )
     );
 
-    showToast("🎉 Winner finalized successfully!", "success");
+    const message: WinnerBroadcast = {
+      giveaway_id: giveawayId,
+      title: data.title,
+      winner_message: `🎉 "${data.title}" giveaway has a winner! Celebrate now!`,
+      timestamp: new Date().toISOString(),
+    };
+
+    await supabase.channel("winner-broadcast").send({
+      type: "broadcast",
+      event: "winner_announcement",
+      payload: message,
+    });
+
+    showToast("🎉 Winner finalized and broadcast sent!", "success");
     triggerConfetti();
   };
 
   const triggerConfetti = () => {
     setConfettiVisible(true);
-    setTimeout(() => setConfettiVisible(false), 4500);
+    setTimeout(() => setConfettiVisible(false), 5000);
   };
 
   return (
@@ -84,30 +121,4 @@ export default function AdminGiveawaysPage() {
               </div>
 
               {giveaway.status === "active" ? (
-                <button
-                  onClick={() => finalizeWinner(giveaway.id)}
-                  className="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition"
-                >
-                  Finalize Winner
-                </button>
-              ) : (
-                <span className="text-green-600 font-medium">Completed</span>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
-
-      {confettiVisible && (
-        <motion.div
-          className="fixed inset-0 z-50 pointer-events-none"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-        >
-          <canvas id="confetti-canvas" className="w-full h-full"></canvas>
-        </motion.div>
-      )}
-    </div>
-  );
-}
+                <but
