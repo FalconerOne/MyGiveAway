@@ -1,6 +1,7 @@
---xxx CREATE components/ui/toast.tsx
-import * as React from 'react';
-import * as ToastPrimitive from '@radix-ui/react-toast';
+"use client";
+
+import * as React from "react";
+import * as ToastPrimitive from "@radix-ui/react-toast";
 
 interface ToastProps {
   title: string;
@@ -9,12 +10,26 @@ interface ToastProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export const Toast: React.FC<ToastProps> = ({ title, description, open, onOpenChange }) => (
-  <ToastPrimitive.Provider>
-    <ToastPrimitive.Root open={open} onOpenChange={onOpenChange} className="bg-gray-900 text-white rounded-md p-4 shadow">
-      <ToastPrimitive.Title className="font-bold">{title}</ToastPrimitive.Title>
-      {description && <ToastPrimitive.Description>{description}</ToastPrimitive.Description>}
-    </ToastPrimitive.Root>
-    <ToastPrimitive.Viewport className="fixed bottom-4 right-4 flex flex-col gap-2" />
-  </ToastPrimitive.Provider>
-);
+function Toast({ title, description, open, onOpenChange }: ToastProps) {
+  return (
+    <ToastPrimitive.Provider>
+      <ToastPrimitive.Root
+        open={open}
+        onOpenChange={onOpenChange}
+        className="bg-gray-900 text-white rounded-md p-4 shadow-md"
+      >
+        <ToastPrimitive.Title className="font-semibold">
+          {title}
+        </ToastPrimitive.Title>
+        {description && (
+          <ToastPrimitive.Description className="text-gray-300 mt-1">
+            {description}
+          </ToastPrimitive.Description>
+        )}
+      </ToastPrimitive.Root>
+      <ToastPrimitive.Viewport className="fixed bottom-4 right-4 flex flex-col gap-2" />
+    </ToastPrimitive.Provider>
+  );
+}
+
+export default Toast;
