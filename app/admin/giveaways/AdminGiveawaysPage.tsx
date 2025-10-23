@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useGlobalToast } from "@/components/ui/GlobalToastProvider";
+import { useGlobalToast } from "@/components/ui/globalToastProvider";
 import { motion } from "framer-motion";
 
 interface Giveaway {

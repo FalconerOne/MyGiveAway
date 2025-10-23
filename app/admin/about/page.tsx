@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import { fetchAboutData } from "@/lib/fetchAboutData";
 import HeroSection from "@/components/about/HeroSection";
 import MissionSection from "@/components/about/MissionSection";
-import TeamGrid from "@/components/about/TeamGrid";
-import TimelineSection from "@/components/about/TimelineSection";
+import TeamGrid from "@/components/about/teamGrid";
+import TimelineSection from "@/components/about/timelineSection";
 import ContactCTA from "@/components/about/ContactCTA";
 
 export const revalidate = 3600; // Refresh data hourly

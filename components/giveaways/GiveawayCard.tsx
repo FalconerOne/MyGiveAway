@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import JoinGiveawayModal from "./JoinGiveawayModal";
-import RealTimeParticipantCounter from "./RealTimeParticipantCounter";
-import PrizePreview from "./PrizePreview";
+import JoinGiveawayModal from "./joinGiveawayModal";
+import RealTimeParticipantCounter from "./realTimeParticipantCounter";
+import PrizePreview from "./prizePreview";
 
 export default function GiveawayCard({ giveaway, userId }: any) {
   const [open, setOpen] = useState(false);

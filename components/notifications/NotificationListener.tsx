@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@/config/supabase";
 import { toast } from "@/components/ui/use-toast";
-import GlobalCelebrationListener from "@/components/celebrations/GlobalCelebrationListener";
+import GlobalCelebrationListener from "@/components/celebrations/globalCelebrationListener";
 
 type Notification = {
   id: string;

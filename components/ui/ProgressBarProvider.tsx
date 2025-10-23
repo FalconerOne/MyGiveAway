@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import ProgressBar from "./ProgressBar";
+import ProgressBar from "./progressBar";
 
 /**
  * Tracks route changes or background activity (like sync, load, or navigation)

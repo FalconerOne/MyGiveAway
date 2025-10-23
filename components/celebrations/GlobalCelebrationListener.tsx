@@ -4,7 +4,7 @@
 
 import { useEffect, useState } from 'react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import WinnerCelebrationPopup from '@/components/global/WinnerCelebrationPopup'
+import WinnerCelebrationPopup from '@/components/global/winnerCelebrationPopup'
 
 interface WinnerPayload {
   id?: string

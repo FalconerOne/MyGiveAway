@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
-import { Card } from '@/components/ui/AnimatedCard'
-import { ProgressBar } from '@/components/ui/ProgressBar'
+import { Card } from '@/components/ui/animatedCard'
+import { ProgressBar } from '@/components/ui/progressBar'
 
 interface TrueCounts {
   users: number

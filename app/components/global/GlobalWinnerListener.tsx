@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { motion } from "framer-motion";
-import { useGlobalToast } from "@/components/ui/GlobalToastProvider";
+import { useGlobalToast } from "@/components/ui/globalToastProvider";
 
 interface WinnerBroadcast {
   giveaway_id: string;

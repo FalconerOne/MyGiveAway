@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import Image from "next/image";
-import AdZoneDisplay from "@/components/ads/AdZoneDisplay"; // ✅ imported for dynamic zone logic
+import AdZoneDisplay from "@/components/ads/adZoneDisplay"; // ✅ imported for dynamic zone logic
 
 interface Ad {
   id: string;

@@ -1,5 +1,5 @@
 "use client";
-import { useGlobalToast } from "./GlobalToastProvider";
+import { useGlobalToast } from "./globalToastProvider";
 
 export default function ToastButton() {
   const { showToast } = useGlobalToast();

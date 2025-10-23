@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { triggerToast } from "@/components/ui/GlobalToastProvider";
+import { triggerToast } from "@/components/ui/globalToastProvider";
 
 const ToastDemoButton: React.FC = () => {
   const handleClick = () => {

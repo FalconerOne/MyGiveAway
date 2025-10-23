@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import AdZoneDisplay from "@/components/ads/AdZoneDisplay";
+import AdZoneDisplay from "@/components/ads/adZoneDisplay";
 
 export default function AboutPage() {
   return (

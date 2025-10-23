@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import AdZoneDisplay from "@/components/ads/AdZoneDisplay";
-import SkillLinkBanner from "@/components/global/SkillLinkBanner";
+import AdZoneDisplay from "@/components/ads/adZoneDisplay";
+import SkillLinkBanner from "@/components/global/skillLinkBanner";
 
 export default function AdsPage() {
   return (

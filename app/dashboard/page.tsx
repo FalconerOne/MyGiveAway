@@ -1,13 +1,13 @@
 "use client";
 
-import PointsDisplay from "@/components/dashboard/PointsDisplay";
-import ReferralsPanel from "@/components/dashboard/ReferralsPanel";
-import PrizeClaimPanel from "@/components/dashboard/PrizeClaimPanel";
-import LeaderboardEnhanced from "@/components/dashboard/LeaderboardEnhanced";
-import AdminTrueCounts from "@/components/dashboard/AdminTrueCounts";
+import PointsDisplay from "@/components/dashboard/pointsDisplay";
+import ReferralsPanel from "@/components/dashboard/referralsPanel";
+import PrizeClaimPanel from "@/components/dashboard/prizeClaimPanel";
+import LeaderboardEnhanced from "@/components/dashboard/leaderboardEnhanced";
+import AdminTrueCounts from "@/components/dashboard/adminTrueCounts";
 import WinnerCelebration from "@/components/global/WinnerCelebration";
-import AdZoneDisplay from "@/components/ads/AdZoneDisplay";
-import SkillLinkBanner from "@/components/global/SkillLinkBanner";
+import AdZoneDisplay from "@/components/ads/adZoneDisplay";
+import SkillLinkBanner from "@/components/global/skillLinkBanner";
 
 export default function DashboardPage() {
   return (

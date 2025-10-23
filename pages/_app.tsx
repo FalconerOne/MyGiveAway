@@ -1,14 +1,14 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import FloatingShareBar from "@/components/FloatingShareBar";
-import ScrollToTop from "@/components/ScrollToTop";
-import ReminderBanner from "@/components/ReminderBanner";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+import FloatingShareBar from "@/components/floatingShareBar";
+import ScrollToTop from "@/components/scrollToTop";
+import ReminderBanner from "@/components/reminderBanner";
 import { useEffect } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { ToastWrapper } from "@/components/ui/toast";
-import MaintenancePreviewBanner from "@/components/MaintenancePreviewBanner"; // ✅ added
+import MaintenancePreviewBanner from "@/components/maintenancePreviewBanner"; // ✅ added
 
 export default function App({ Component, pageProps }: AppProps) {
   // ✅ Optional: refresh session silently

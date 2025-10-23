@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, BarChart, Bar, CartesianGrid } from "recharts";
 import { motion } from "framer-motion";
-import ExportButtons from "@/components/analytics/ExportButtons";
-import AnimatedCard from "@/components/ui/AnimatedCard";
+import ExportButtons from "@/components/analytics/exportButtons";
+import AnimatedCard from "@/components/ui/animatedCard";
 import Shimmer from "@/components/ui/Shimmer";
 
 interface DailyStat {

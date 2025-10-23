@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import { motion } from "framer-motion";
 import { FaSignOutAlt, FaBars, FaTimes } from "react-icons/fa";
-import NotificationCenter from "@/components/NotificationCenter";
+import NotificationCenter from "@/components/notificationCenter";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<any>(null);
